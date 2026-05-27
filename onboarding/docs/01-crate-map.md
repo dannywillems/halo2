@@ -54,8 +54,8 @@ distinction is made precise in
 
 The workspace lists four crates and nothing else:
 
-**Source:** [`Cargo.toml`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/Cargo.toml#L1-L7)
-
+```toml file=../../Cargo.toml#L1-L7 title="Cargo.toml"
+```
 ### 3.2 The `halo2` shim crate
 
 The crate named `halo2` is a re-export shim. Its only dependency is
@@ -65,15 +65,15 @@ users can write `halo2::plonk::create_proof` instead of
 understand the public-version-vs-internal-version dance; do not put
 code here.
 
-**Source:** [`halo2/Cargo.toml`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2/Cargo.toml#L1-L24)
-
+```toml file=../../halo2/Cargo.toml#L1-L24 title="halo2/Cargo.toml"
+```
 ### 3.3 `halo2_proofs`: the proving system
 
 This is the crate every other crate (and every downstream user)
 depends on. Its public modules:
 
-**Source:** [`halo2_proofs/src/lib.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/lib.rs)
-
+```rust file=../../halo2_proofs/src/lib.rs title="halo2_proofs/src/lib.rs"
+```
 What each module owns:
 
 - `arithmetic`: FFT, NTT, multi-scalar multiplication (`best_multiexp`),
@@ -96,8 +96,8 @@ What each module owns:
 
 ### 3.4 `halo2_gadgets`: reusable chips
 
-**Source:** [`halo2_gadgets/src/lib.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/lib.rs)
-
+```rust file=../../halo2_gadgets/src/lib.rs title="halo2_gadgets/src/lib.rs"
+```
 The top-level modules are intentionally narrow:
 
 - `ecc`: Pallas / Vesta point operations as a chip and a gadget
@@ -118,8 +118,8 @@ function in plain field arithmetic. No `halo2_proofs` dependency.
 The in-circuit chip in `halo2_gadgets::poseidon::pow5` uses this
 crate as the spec it must match.
 
-**Source:** [`halo2_poseidon/Cargo.toml`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_poseidon/Cargo.toml)
-
+```toml file=../../halo2_poseidon/Cargo.toml title="halo2_poseidon/Cargo.toml"
+```
 ## 4. Failure modes
 
 - **Edits in the wrong crate.** Adding a new chip to `halo2_proofs`

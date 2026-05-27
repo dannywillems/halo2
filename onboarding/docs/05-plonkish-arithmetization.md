@@ -73,15 +73,15 @@ columns at every row appear in a fixed table; see chapter 07.
 
 ### 3.1 The four column types
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L18-L86)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L18-L86 title="halo2_proofs/src/plonk/circuit.rs"
+```
 Tag types `Advice`, `Fixed`, `Instance` are zero-sized markers;
 `Any` is the runtime enum. `Column<C>` is `(index, marker)`.
 
 ### 3.2 Selectors
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L255-L269)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L255-L269 title="halo2_proofs/src/plonk/circuit.rs"
+```
 A `Selector(idx, is_simple)` is a virtual fixed column that takes
 values in $\{0, 1\}$. Two flavours exist:
 
@@ -94,16 +94,16 @@ values in $\{0, 1\}$. Two flavours exist:
 
 ### 3.3 Queries
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L272-L302)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L272-L302 title="halo2_proofs/src/plonk/circuit.rs"
+```
 Every distinct `(column, rotation)` pair becomes one entry in the
 proof's evaluation list. Reusing the same query in many gates is
 free; introducing a new rotation costs one extra opening.
 
 ### 3.4 The `TableColumn` type
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L304-L336)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L304-L336 title="halo2_proofs/src/plonk/circuit.rs"
+```
 `TableColumn` wraps a `Column<Fixed>` for use inside lookup
 arguments. The wrapper exists to prevent chip authors from
 accidentally loading a lookup table into a column without
@@ -113,8 +113,8 @@ explicitly.
 
 ### 3.5 The `Circuit` trait
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L466-L486)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L466-L486 title="halo2_proofs/src/plonk/circuit.rs"
+```
 The two phases:
 
 - `configure(meta)`: pure shape declaration. The implementer
@@ -131,8 +131,8 @@ witness.
 
 ### 3.6 `Expression`
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L488-L510)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L488-L510 title="halo2_proofs/src/plonk/circuit.rs"
+```
 `Expression<F>` is a tree of column queries, selector references,
 constants, and arithmetic combinators. Its core operation is
 `evaluate`, a fold parameterized by callbacks for each variant;
@@ -142,8 +142,8 @@ and the dev tools (evaluated row by row).
 
 ### 3.7 `Constraints::with_selector`
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L851-L875)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L851-L875 title="halo2_proofs/src/plonk/circuit.rs"
+```
 `Constraints::with_selector(s, iter)` multiplies every constraint
 in `iter` by the selector expression `s`. This is the idiom for
 "these constraints are only enforced where the selector is 1". Use
@@ -153,8 +153,8 @@ named-constraint debug labels intact.
 
 ### 3.8 `ConstraintSystem`
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L932-L965)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L932-L965 title="halo2_proofs/src/plonk/circuit.rs"
+```
 The bag of state that `configure` builds up. The interesting
 fields:
 
@@ -178,8 +178,8 @@ The canonical example circuit lives in
 [`halo2_proofs/examples/simple-example.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/examples/simple-example.rs).
 The multiplication gate is declared inside the `configure` block:
 
-**Source:** [`halo2_proofs/examples/simple-example.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/examples/simple-example.rs#L60-L115)
-
+```rust file=../../halo2_proofs/examples/simple-example.rs#L60-L115 title="halo2_proofs/examples/simple-example.rs"
+```
 The constraint `s_mul * (lhs * rhs - out) = 0` becomes a single
 `Expression<F>` evaluated row by row.
 

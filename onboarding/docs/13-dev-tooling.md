@@ -44,8 +44,8 @@ same constraint.
 
 ### 3.1 The dev module surface
 
-**Source:** [`halo2_proofs/src/dev.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/dev.rs#L1-L42)
-
+```rust file=../../halo2_proofs/src/dev.rs#L1-L42 title="halo2_proofs/src/dev.rs"
+```
 Public exports:
 
 - `MockProver`
@@ -58,8 +58,8 @@ Public exports:
 
 ### 3.2 `MockProver`
 
-**Source:** [`halo2_proofs/src/dev.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/dev.rs#L270-L300)
-
+```rust file=../../halo2_proofs/src/dev.rs#L270-L300 title="halo2_proofs/src/dev.rs"
+```
 Two entry points:
 
 - `MockProver::run(k, &circuit, instances)`: synthesize and
@@ -81,8 +81,8 @@ MockProver::<Fp>::run(k, &circuit, vec![public_inputs])?
 
 ### 3.3 `CircuitCost`
 
-**Source:** [`halo2_proofs/src/dev/cost.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/dev/cost.rs#L20-L80)
-
+```rust file=../../halo2_proofs/src/dev/cost.rs#L20-L80 title="halo2_proofs/src/dev/cost.rs"
+```
 `CircuitCost::measure(k, &circuit)` returns a struct exposing
 the marginal cost per proof (advice columns, fixed columns,
 gates, lookup arguments, equality constraints, etc.). The
@@ -90,8 +90,8 @@ gates, lookup arguments, equality constraints, etc.). The
 
 ### 3.4 `CircuitGates`
 
-**Source:** [`halo2_proofs/src/dev/gates.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/dev/gates.rs#L80-L150)
-
+```rust file=../../halo2_proofs/src/dev/gates.rs#L80-L150 title="halo2_proofs/src/dev/gates.rs"
+```
 `CircuitGates::collect::<MyCircuit>()` walks the configure step
 and prints every gate's name, degree, and column references.
 Useful when chasing "why is my circuit's max degree 9 instead of
@@ -99,8 +99,8 @@ Useful when chasing "why is my circuit's max degree 9 instead of
 
 ### 3.5 `TracingFloorPlanner`
 
-**Source:** [`halo2_proofs/src/dev/tfp.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/dev/tfp.rs#L60-L120)
-
+```rust file=../../halo2_proofs/src/dev/tfp.rs#L60-L120 title="halo2_proofs/src/dev/tfp.rs"
+```
 Wraps any floor planner and emits `tracing` events for each
 region, table, and namespace push. Use it from a test by setting
 `Circuit::FloorPlanner = TracingFloorPlanner<V1>` and turning on
@@ -108,8 +108,8 @@ region, table, and namespace push. Use it from a test by setting
 
 ### 3.6 The dev-graph layout
 
-**Source:** [`halo2_proofs/src/dev/graph/layout.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/dev/graph/layout.rs#L30-L100)
-
+```rust file=../../halo2_proofs/src/dev/graph/layout.rs#L30-L100 title="halo2_proofs/src/dev/graph/layout.rs"
+```
 `CircuitLayout::default().render(k, &circuit, &drawing)` renders
 the column-by-row occupancy as a PNG via `plotters`. The
 canonical use is

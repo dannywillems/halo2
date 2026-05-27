@@ -45,8 +45,8 @@ random linear combination of all such $q$'s.
 
 ### 3.1 Module structure and challenges
 
-**Source:** [`halo2_proofs/src/poly/multiopen.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/multiopen.rs#L1-L40)
-
+```rust file=../../halo2_proofs/src/poly/multiopen.rs#L1-L40 title="halo2_proofs/src/poly/multiopen.rs"
+```
 Four named challenges, in order of use:
 
 - $x_1$: collapses queries that share the same point set.
@@ -62,8 +62,8 @@ this when chasing a multiopen verifier mismatch.
 
 ### 3.2 Query types
 
-**Source:** [`halo2_proofs/src/poly/multiopen.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/multiopen.rs#L41-L120)
-
+```rust file=../../halo2_proofs/src/poly/multiopen.rs#L41-L120 title="halo2_proofs/src/poly/multiopen.rs"
+```
 `ProverQuery` carries the actual polynomial coefficients; the
 prover needs them. `VerifierQuery` carries only the commitment
 reference and the claimed evaluation; the verifier only ever sees
@@ -71,8 +71,8 @@ those.
 
 ### 3.3 The prover
 
-**Source:** [`halo2_proofs/src/poly/multiopen/prover.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/multiopen/prover.rs#L20-L120)
-
+```rust file=../../halo2_proofs/src/poly/multiopen/prover.rs#L20-L120 title="halo2_proofs/src/poly/multiopen/prover.rs"
+```
 The prover's flow:
 
 1. Bucket the queries by point set; within each bucket, compute
@@ -88,16 +88,16 @@ The prover's flow:
 
 ### 3.4 The verifier
 
-**Source:** [`halo2_proofs/src/poly/multiopen/verifier.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/multiopen/verifier.rs#L1-L80)
-
+```rust file=../../halo2_proofs/src/poly/multiopen/verifier.rs#L1-L80 title="halo2_proofs/src/poly/multiopen/verifier.rs"
+```
 The verifier mirrors the prover step by step, replacing
 "polynomial" with "commitment + evaluation" everywhere, and runs
 the final IPA verifier on the collapsed claim.
 
 ### 3.5 The 2025 soundness fix (halo2_proofs 0.3.1)
 
-**Source:** [`halo2_proofs/CHANGELOG.md`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/CHANGELOG.md#L30-L45)
-
+```markdown file=../../halo2_proofs/CHANGELOG.md#L30-L45 title="halo2_proofs/CHANGELOG.md"
+```
 The pre-0.3.1 multiopen code grouped queries by
 `(point, commitment)` using a hash map that did not detect when
 the *same* `(point, commitment)` pair was inserted twice with two

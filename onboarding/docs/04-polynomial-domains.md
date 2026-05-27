@@ -56,8 +56,8 @@ challenge point.
 
 ### 3.1 The struct and the constants it caches
 
-**Source:** [`halo2_proofs/src/poly/domain.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/domain.rs#L19-L36)
-
+```rust file=../../halo2_proofs/src/poly/domain.rs#L19-L36 title="halo2_proofs/src/poly/domain.rs"
+```
 Every value here is a precomputed function of $k$ and the
 quotient-degree bound $j$:
 
@@ -75,8 +75,8 @@ quotient-degree bound $j$:
 
 ### 3.2 Construction
 
-**Source:** [`halo2_proofs/src/poly/domain.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/domain.rs#L37-L148)
-
+```rust file=../../halo2_proofs/src/poly/domain.rs#L37-L148 title="halo2_proofs/src/poly/domain.rs"
+```
 Two invariants this code enforces:
 
 - $2^{\text{extended\_k}} \geq n \cdot j$, so the quotient
@@ -123,16 +123,16 @@ chunked-quotient construction.
 
 ### 3.4 The vanishing-polynomial division
 
-**Source:** [`halo2_proofs/src/poly/domain.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/domain.rs#L327-L350)
-
+```rust file=../../halo2_proofs/src/poly/domain.rs#L327-L350 title="halo2_proofs/src/poly/domain.rs"
+```
 This is where the cached `t_evaluations` are used: dividing a
 polynomial in `ExtendedLagrangeCoeff` by $t_H$ is a pointwise
 multiplication by `1 / t_H(zeta * omega'^i)`.
 
 ### 3.5 Rotation
 
-**Source:** [`halo2_proofs/src/poly/domain.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/domain.rs#L406-L419)
-
+```rust file=../../halo2_proofs/src/poly/domain.rs#L406-L419 title="halo2_proofs/src/poly/domain.rs"
+```
 `rotate_omega(value, rotation)` returns $\text{value} \cdot
 \omega^{\text{rotation}}$. In the verifier this is how the random
 challenge $x$ becomes $\omega^r \cdot x$ for a query at relative

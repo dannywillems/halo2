@@ -54,8 +54,8 @@ reducing the per-bit constraint cost.
 
 ### 3.1 The `Spec` trait (halo2_poseidon)
 
-**Source:** [`halo2_poseidon/src/lib.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_poseidon/src/lib.rs#L35-L120)
-
+```rust file=../../halo2_poseidon/src/lib.rs#L35-L120 title="halo2_poseidon/src/lib.rs"
+```
 A `Spec<F, T, RATE>` implementation provides:
 
 - `full_rounds()`, `partial_rounds()`: round counts.
@@ -69,8 +69,8 @@ which is the parameters Orchard uses.
 
 ### 3.2 The `Pow5Chip` (in-circuit Poseidon)
 
-**Source:** [`halo2_gadgets/src/poseidon/pow5.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/poseidon/pow5.rs#L35-L100)
-
+```rust file=../../halo2_gadgets/src/poseidon/pow5.rs#L35-L100 title="halo2_gadgets/src/poseidon/pow5.rs"
+```
 The chip implements `PoseidonInstructions` using the standard
 $x^5$ S-box and the round constants from
 [`halo2_poseidon::p128pow5t3`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_poseidon/src/p128pow5t3.rs).
@@ -80,8 +80,8 @@ remaining round operations are folded into compound gates.
 
 ### 3.3 The Poseidon sponge and hash API
 
-**Source:** [`halo2_gadgets/src/poseidon.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/poseidon.rs#L115-L170)
-
+```rust file=../../halo2_gadgets/src/poseidon.rs#L115-L170 title="halo2_gadgets/src/poseidon.rs"
+```
 `Sponge<F, S, T, RATE>` is the in-circuit sponge; `Hash<F, S, T,
 RATE, L>` is the convenience type that fixes an absorption mode.
 The `L` parameter records the length of a single hash invocation
@@ -90,8 +90,8 @@ padding.
 
 ### 3.4 Sinsemilla: the chip
 
-**Source:** [`halo2_gadgets/src/sinsemilla/chip.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/sinsemilla/chip.rs#L100-L160)
-
+```rust file=../../halo2_gadgets/src/sinsemilla/chip.rs#L100-L160 title="halo2_gadgets/src/sinsemilla/chip.rs"
+```
 `SinsemillaChip<Hash, Commit, Fixed, Lookup>` is generic over
 four type parameters because Sinsemilla is used in two flavours
 (a hash and a commitment) over two domains (MerkleCRH and
@@ -105,8 +105,8 @@ crate.
 
 ### 3.5 Sinsemilla-Merkle
 
-**Source:** [`halo2_gadgets/src/sinsemilla/merkle.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/sinsemilla/merkle.rs#L18-L75)
-
+```rust file=../../halo2_gadgets/src/sinsemilla/merkle.rs#L18-L75 title="halo2_gadgets/src/sinsemilla/merkle.rs"
+```
 `MerkleInstructions` defines the per-layer hash, and
 `MerklePath<...>::calculate_root` runs the path verification.
 The level-specific personalization (each Merkle layer absorbs the
@@ -115,8 +115,8 @@ layer number to prevent attacks across heights) is in
 
 ### 3.6 SHA-256 table16 chip
 
-**Source:** [`halo2_gadgets/src/sha256/table16.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/sha256/table16.rs#L230-L290)
-
+```rust file=../../halo2_gadgets/src/sha256/table16.rs#L230-L290 title="halo2_gadgets/src/sha256/table16.rs"
+```
 The `Table16Chip` decomposes each 32-bit SHA-256 word into two
 16-bit halves and uses a 16-bit "spread" lookup
 ([`table16/spread_table.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/sha256/table16/spread_table.rs))

@@ -3,6 +3,7 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import codeImport from 'remark-code-import';
 
 const UPSTREAM_REPO = 'https://github.com/zcash/halo2';
 const FORK_REPO = 'https://github.com/dannywillems/halo2';
@@ -43,7 +44,13 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',
-          remarkPlugins: [remarkMath],
+          remarkPlugins: [
+            remarkMath,
+            // remark-code-import inflates ```lang file=path#L1-L5
+            // fences with the cited line range from disk at build
+            // time. Paths are relative to the Markdown file.
+            [codeImport, { rootDir: __dirname, allowImportingFromOutside: true }],
+          ],
           rehypePlugins: [rehypeKatex],
           editUrl: `${FORK_REPO}/edit/onboarding/onboarding/`,
         },

@@ -44,8 +44,8 @@ derived from it.
 
 ### 3.1 The trait layer
 
-**Source:** [`halo2_proofs/src/transcript.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/transcript.rs#L22-L65)
-
+```rust file=../../halo2_proofs/src/transcript.rs#L22-L65 title="halo2_proofs/src/transcript.rs"
+```
 Three traits cleanly separate concerns:
 
 - `Transcript`: the shared base. Includes `squeeze_challenge`,
@@ -73,8 +73,8 @@ break.
 
 ### 3.2 The Blake2b implementation
 
-**Source:** [`halo2_proofs/src/transcript.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/transcript.rs#L64-L160)
-
+```rust file=../../halo2_proofs/src/transcript.rs#L64-L160 title="halo2_proofs/src/transcript.rs"
+```
 The `Blake2bRead` and `Blake2bWrite` types are the production
 default. Three implementation choices to remember:
 
@@ -92,8 +92,8 @@ default. Three implementation choices to remember:
 
 ### 3.3 Typed challenges
 
-**Source:** [`halo2_proofs/src/transcript.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/transcript.rs#L230-L260)
-
+```rust file=../../halo2_proofs/src/transcript.rs#L230-L260 title="halo2_proofs/src/transcript.rs"
+```
 `ChallengeScalar<C, T>` carries a phantom type `T` so the
 compiler can distinguish "the lookup challenge $\theta$" from
 "the permutation challenge $\beta$" even though both are scalars.
@@ -111,8 +111,8 @@ at compile time.
 
 ### 3.4 The `Challenge255` encoding
 
-**Source:** [`halo2_proofs/src/transcript.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/transcript.rs#L270-L305)
-
+```rust file=../../halo2_proofs/src/transcript.rs#L270-L305 title="halo2_proofs/src/transcript.rs"
+```
 `Challenge255` is the in-protocol challenge representation: a
 255-bit random string (32 bytes with the top bit masked off).
 Most halo2 code never sees it directly; it appears inside the

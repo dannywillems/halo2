@@ -54,8 +54,8 @@ the verifier checks four boundary and recurrence relations on it
 
 ### 3.1 The argument struct
 
-**Source:** [`halo2_proofs/src/plonk/lookup.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/lookup.rs)
-
+```rust file=../../halo2_proofs/src/plonk/lookup.rs title="halo2_proofs/src/plonk/lookup.rs"
+```
 `Argument` is the parsed declaration of one lookup: a pair of
 `Vec<Expression<F>>` of equal length, one for inputs, one for
 table cells. The `required_degree` method records, in code, the
@@ -66,8 +66,8 @@ in the codebase to read the Plookup algebra.
 
 `ConstraintSystem::lookup` is the public API:
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L1057-L1085)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L1057-L1085 title="halo2_proofs/src/plonk/circuit.rs"
+```
 The closure receives a `VirtualCells` (so it can call
 `meta.query_advice` etc.) and returns a vector of
 `(input_expression, table_expression)` pairs. The table expression
@@ -77,8 +77,8 @@ is enforced by the types (`query_lookup_table` returns an
 
 ### 3.3 The prover
 
-**Source:** [`halo2_proofs/src/plonk/lookup/prover.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/lookup/prover.rs#L1-L60)
-
+```rust file=../../halo2_proofs/src/plonk/lookup/prover.rs#L1-L60 title="halo2_proofs/src/plonk/lookup/prover.rs"
+```
 The prover steps, in order:
 
 1. Compute $\tilde a$ and $\tilde s$ in `LagrangeCoeff`,
@@ -94,8 +94,8 @@ The prover steps, in order:
 
 ### 3.4 The verifier
 
-**Source:** [`halo2_proofs/src/plonk/lookup/verifier.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/lookup/verifier.rs)
-
+```rust file=../../halo2_proofs/src/plonk/lookup/verifier.rs title="halo2_proofs/src/plonk/lookup/verifier.rs"
+```
 The verifier checks four identities at the challenge point $x$:
 
 - $L_0(x) \cdot (1 - z(x)) = 0$ (boundary at $\omega^0$),

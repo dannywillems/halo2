@@ -41,8 +41,8 @@ relies on the incomplete-and-then-complete double-and-add gates.
 
 ### 3.1 The crate surface
 
-**Source:** [`halo2_gadgets/src/lib.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/lib.rs#L1-L35)
-
+```rust file=../../halo2_gadgets/src/lib.rs#L1-L35 title="halo2_gadgets/src/lib.rs"
+```
 Four top-level modules:
 
 - `ecc`: Pallas / Vesta points.
@@ -54,8 +54,8 @@ Four top-level modules:
 
 ### 3.2 The `EccInstructions` trait
 
-**Source:** [`halo2_gadgets/src/ecc.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/ecc.rs#L14-L62)
-
+```rust file=../../halo2_gadgets/src/ecc.rs#L14-L62 title="halo2_gadgets/src/ecc.rs"
+```
 A few associated types make the trait surface clean:
 
 - `Point`, `NonIdentityPoint`, `X`: witness representations of
@@ -75,8 +75,8 @@ chip impl.
 
 ### 3.3 The `EccChip` config
 
-**Source:** [`halo2_gadgets/src/ecc/chip.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/ecc/chip.rs#L130-L170)
-
+```rust file=../../halo2_gadgets/src/ecc/chip.rs#L130-L170 title="halo2_gadgets/src/ecc/chip.rs"
+```
 The config records which advice columns and selectors are
 allocated for each sub-gate. The columns are *shared* across
 sub-gates; each selector turns on a different polynomial
@@ -84,8 +84,8 @@ identity. This is what makes the chip dense.
 
 ### 3.4 The `EccChip` itself
 
-**Source:** [`halo2_gadgets/src/ecc/chip.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/ecc/chip.rs#L225-L270)
-
+```rust file=../../halo2_gadgets/src/ecc/chip.rs#L225-L270 title="halo2_gadgets/src/ecc/chip.rs"
+```
 The chip stores its `Config` and the parameter type that fixes
 the set of base points. `EccChip::configure` is where the
 sub-gates are declared.
@@ -110,8 +110,8 @@ Each sub-gate lives in its own file:
 
 ### 3.6 The shared utilities
 
-**Source:** [`halo2_gadgets/src/utilities/lookup_range_check.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/utilities/lookup_range_check.rs#L1-L60)
-
+```rust file=../../halo2_gadgets/src/utilities/lookup_range_check.rs#L1-L60 title="halo2_gadgets/src/utilities/lookup_range_check.rs"
+```
 `LookupRangeCheck` is used by ECC and Sinsemilla alike to assert
 that a witnessed value fits in $K$ bits, using a lookup table of
 size $2^K$. It is one of the most-touched files in the repo (see

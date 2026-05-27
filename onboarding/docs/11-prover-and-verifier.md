@@ -41,23 +41,23 @@ final IPA opening.
 
 ### 3.1 Key generation
 
-**Source:** [`halo2_proofs/src/plonk/keygen.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/keygen.rs#L189-L244)
-
+```rust file=../../halo2_proofs/src/plonk/keygen.rs#L189-L244 title="halo2_proofs/src/plonk/keygen.rs"
+```
 `keygen_vk` walks the circuit, builds the `ConstraintSystem`,
 synthesizes the fixed columns and selectors using a witness-free
 copy of the circuit, runs selector combining, computes the
 permutation polynomials, and commits to everything.
 
-**Source:** [`halo2_proofs/src/plonk/keygen.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/keygen.rs#L246-L337)
-
+```rust file=../../halo2_proofs/src/plonk/keygen.rs#L246-L337 title="halo2_proofs/src/plonk/keygen.rs"
+```
 `keygen_pk` takes the `VerifyingKey` and re-runs the same
 synthesis to fill in the L1 / extended-domain caches used by the
 prover.
 
 ### 3.2 The prover
 
-**Source:** [`halo2_proofs/src/plonk/prover.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/prover.rs#L33-L100)
-
+```rust file=../../halo2_proofs/src/plonk/prover.rs#L33-L100 title="halo2_proofs/src/plonk/prover.rs"
+```
 The full prover flow (file is 786 lines; reading it once is
 worth a study session by itself):
 
@@ -82,8 +82,8 @@ worth a study session by itself):
 
 ### 3.3 The verifier
 
-**Source:** [`halo2_proofs/src/plonk/verifier.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/verifier.rs#L65-L120)
-
+```rust file=../../halo2_proofs/src/plonk/verifier.rs#L65-L120 title="halo2_proofs/src/plonk/verifier.rs"
+```
 The verifier is structurally a mirror of the prover:
 
 1. Hash the verifying key.
@@ -108,8 +108,8 @@ from $O(n)$ to $O(\log n)$ amortized.
 
 ### 3.4 The integration test
 
-**Source:** [`halo2_proofs/tests/plonk_api.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/tests/plonk_api.rs#L1-L60)
-
+```rust file=../../halo2_proofs/tests/plonk_api.rs#L1-L60 title="halo2_proofs/tests/plonk_api.rs"
+```
 The integration test in `tests/plonk_api.rs` runs the full
 keygen-prove-verify loop on a hand-designed circuit and compares
 the resulting proof bytes against the checked-in fixture

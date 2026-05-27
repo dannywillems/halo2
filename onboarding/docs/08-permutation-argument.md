@@ -61,8 +61,8 @@ lists "intermediate" and "final" boundary constraints separately.
 
 ### 3.1 The argument struct
 
-**Source:** [`halo2_proofs/src/plonk/permutation.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/permutation.rs)
-
+```rust file=../../halo2_proofs/src/plonk/permutation.rs title="halo2_proofs/src/plonk/permutation.rs"
+```
 `Argument` carries the list of columns enrolled in the permutation;
 `required_degree` records the four constraint patterns the verifier
 checks (in the same style as the lookup chapter):
@@ -79,8 +79,8 @@ checks (in the same style as the lookup chapter):
 
 The user-facing API:
 
-**Source:** [`halo2_proofs/src/plonk/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/circuit.rs#L1050-L1060)
-
+```rust file=../../halo2_proofs/src/plonk/circuit.rs#L1050-L1060 title="halo2_proofs/src/plonk/circuit.rs"
+```
 `meta.enable_equality(column)` is the only entry point. It adds
 the column to the permutation argument's column list, after which
 `Region::constrain_equal` can target cells in that column. The
@@ -91,8 +91,8 @@ verifying-key compatibility.
 
 ### 3.3 Keygen
 
-**Source:** [`halo2_proofs/src/plonk/permutation/keygen.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/permutation/keygen.rs)
-
+```rust file=../../halo2_proofs/src/plonk/permutation/keygen.rs title="halo2_proofs/src/plonk/permutation/keygen.rs"
+```
 The keygen step:
 
 1. Walks the equality-constraint graph produced by the layouter,
@@ -107,8 +107,8 @@ The keygen step:
 
 ### 3.4 The prover
 
-**Source:** [`halo2_proofs/src/plonk/permutation/prover.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/permutation/prover.rs)
-
+```rust file=../../halo2_proofs/src/plonk/permutation/prover.rs title="halo2_proofs/src/plonk/permutation/prover.rs"
+```
 The prover (per chunk):
 
 1. Computes the numerator product $\prod_j (P_j(X) + \beta \delta^j X + \gamma)$ and the denominator
@@ -119,8 +119,8 @@ The prover (per chunk):
 
 ### 3.5 The verifier
 
-**Source:** [`halo2_proofs/src/plonk/permutation/verifier.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/plonk/permutation/verifier.rs)
-
+```rust file=../../halo2_proofs/src/plonk/permutation/verifier.rs title="halo2_proofs/src/plonk/permutation/verifier.rs"
+```
 The verifier expects to find one commitment per chunk in the
 transcript, queries each $z_k$ at $x$ and $\omega \cdot x$, then
 checks the four identities listed in 3.1 above. The check at

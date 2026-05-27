@@ -56,8 +56,8 @@ place regions. Two are shipped:
 
 ### 3.1 The `Chip` trait
 
-**Source:** [`halo2_proofs/src/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/circuit.rs#L20-L49)
-
+```rust file=../../halo2_proofs/src/circuit.rs#L20-L49 title="halo2_proofs/src/circuit.rs"
+```
 `Chip::Config` is the type returned by your chip's `configure`
 function and consumed by `synthesize`. `Chip::Loaded` is for chip
 state loaded at the start of synthesis (e.g. a precomputed lookup
@@ -65,8 +65,8 @@ table); use `()` if you have none.
 
 ### 3.2 `Cell` and `AssignedCell`
 
-**Source:** [`halo2_proofs/src/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/circuit.rs#L86-L183)
-
+```rust file=../../halo2_proofs/src/circuit.rs#L86-L183 title="halo2_proofs/src/circuit.rs"
+```
 The two layered types:
 
 - `Cell`: pure pointer.
@@ -81,8 +81,8 @@ into the new cell *and* issues the equality constraint.
 
 ### 3.3 The `Region` API
 
-**Source:** [`halo2_proofs/src/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/circuit.rs#L185-L210)
-
+```rust file=../../halo2_proofs/src/circuit.rs#L185-L210 title="halo2_proofs/src/circuit.rs"
+```
 The methods you will use most:
 
 - `assign_advice(annotation, column, offset, value)`: write to an
@@ -101,8 +101,8 @@ The methods you will use most:
 
 ### 3.4 The `Layouter` trait
 
-**Source:** [`halo2_proofs/src/circuit.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/circuit.rs#L420-L495)
-
+```rust file=../../halo2_proofs/src/circuit.rs#L420-L495 title="halo2_proofs/src/circuit.rs"
+```
 Most of the time, a chip only calls:
 
 - `layouter.assign_region(name, closure)`
@@ -116,8 +116,8 @@ Most of the time, a chip only calls:
 
 ### 3.5 `SimpleFloorPlanner`
 
-**Source:** [`halo2_proofs/src/circuit/floor_planner/single_pass.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/circuit/floor_planner/single_pass.rs#L20-L39)
-
+```rust file=../../halo2_proofs/src/circuit/floor_planner/single_pass.rs#L20-L39 title="halo2_proofs/src/circuit/floor_planner/single_pass.rs"
+```
 Single-pass. Each region starts on the row after the previous
 region ended, regardless of column usage. The closure is invoked
 once. Use this for clarity in tests and for any circuit small
@@ -125,8 +125,8 @@ enough that layout density does not matter.
 
 ### 3.6 `V1` floor planner
 
-**Source:** [`halo2_proofs/src/circuit/floor_planner/v1.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/circuit/floor_planner/v1.rs#L20-L40)
-
+```rust file=../../halo2_proofs/src/circuit/floor_planner/v1.rs#L20-L40 title="halo2_proofs/src/circuit/floor_planner/v1.rs"
+```
 Two passes:
 
 - *Measurement pass*: a fake layouter (`V1Pass` in measurement

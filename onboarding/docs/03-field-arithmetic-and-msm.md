@@ -65,8 +65,8 @@ the bit length of the scalars.
 
 ### 3.1 The module surface
 
-**Source:** [`halo2_proofs/src/arithmetic.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/arithmetic.rs#L1-L27)
-
+```rust file=../../halo2_proofs/src/arithmetic.rs#L1-L27 title="halo2_proofs/src/arithmetic.rs"
+```
 `pub use pasta_curves::arithmetic::*;` re-exports the curve traits
 (`CurveAffine`, `CurveExt`, `Group`, `Coordinates`, etc.) so the
 rest of the crate can refer to them without naming
@@ -76,8 +76,8 @@ rest of the crate can refer to them without naming
 
 The fast path uses Pippenger:
 
-**Source:** [`halo2_proofs/src/arithmetic.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/arithmetic.rs#L141-L180)
-
+```rust file=../../halo2_proofs/src/arithmetic.rs#L141-L180 title="halo2_proofs/src/arithmetic.rs"
+```
 A few invariants worth knowing:
 
 - The window size $w$ is chosen as a function of $m$. The code
@@ -89,8 +89,8 @@ A few invariants worth knowing:
 - For very small inputs the dispatch falls through to
   `small_multiexp`, a naive double-and-add:
 
-**Source:** [`halo2_proofs/src/arithmetic.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/arithmetic.rs#L114-L136)
-
+```rust file=../../halo2_proofs/src/arithmetic.rs#L114-L136 title="halo2_proofs/src/arithmetic.rs"
+```
 The 0.3.2 changelog notes "performance has been improved" for
 `best_multiexp`; PR
 [#796](https://github.com/zcash/halo2/pull/796) is the source of
@@ -98,21 +98,21 @@ that improvement.
 
 ### 3.3 The FFT
 
-**Source:** [`halo2_proofs/src/arithmetic.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/arithmetic.rs#L188-L255)
-
+```rust file=../../halo2_proofs/src/arithmetic.rs#L188-L255 title="halo2_proofs/src/arithmetic.rs"
+```
 The dispatcher `best_fft` chooses between a serial recursive
 implementation and a parallel one based on `log_n` and the number
 of rayon threads. The recursion is in `recursive_butterfly_arithmetic`:
 
-**Source:** [`halo2_proofs/src/arithmetic.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/arithmetic.rs#L256-L295)
-
+```rust file=../../halo2_proofs/src/arithmetic.rs#L256-L295 title="halo2_proofs/src/arithmetic.rs"
+```
 The slice `a` is mutated in place; on entry it holds bit-reversed
 coefficients, on exit it holds evaluations in standard order.
 
 ### 3.4 Parallelization helper
 
-**Source:** [`halo2_proofs/src/arithmetic.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/arithmetic.rs#L341-L363)
-
+```rust file=../../halo2_proofs/src/arithmetic.rs#L341-L363 title="halo2_proofs/src/arithmetic.rs"
+```
 The closure receives a mutable subslice and the global index of its
 first element. This is the workhorse for almost every parallel
 loop in the crate. Always prefer it to `chunks_mut` plus

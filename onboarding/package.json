@@ -17,6 +17,7 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "rehype-katex": "^7.0.1",
+    "remark-code-import": "^1.2.0",
     "remark-math": "^6.0.0"
   },
   "devDependencies": {

@@ -42,8 +42,8 @@ flags CI uses. Defined in
 
 ### 3.1 The toolchain
 
-**Source:** [`rust-toolchain.toml`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/rust-toolchain.toml)
-
+```toml file=../../rust-toolchain.toml title="rust-toolchain.toml"
+```
 Install rustup, then `cd` into the repo. The toolchain file will
 pin your compiler to `1.60.0` automatically. Two facts to keep in
 mind:
@@ -60,8 +60,8 @@ mind:
 
 The composite action that all CI jobs share is:
 
-**Source:** [`.github/actions/prepare/action.yml`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/.github/actions/prepare/action.yml)
-
+```yaml file=../../.github/actions/prepare/action.yml title=".github/actions/prepare/action.yml"
+```
 The flag string is:
 
 ```
@@ -130,8 +130,8 @@ cargo doc --workspace --all-features --document-private-items --open
 
 The PR checks are split across several workflows:
 
-**Source:** [`.github/workflows/ci.yml`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/.github/workflows/ci.yml)
-
+```yaml file=../../.github/workflows/ci.yml title=".github/workflows/ci.yml"
+```
 The notable jobs:
 
 - `test`: matrix over `{stable, beta, nightly}` x

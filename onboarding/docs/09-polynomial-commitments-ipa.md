@@ -65,8 +65,8 @@ trustless recursion.
 
 ### 3.1 The setup struct `Params`
 
-**Source:** [`halo2_proofs/src/poly/commitment.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/commitment.rs#L23-L45)
-
+```rust file=../../halo2_proofs/src/poly/commitment.rs#L23-L45 title="halo2_proofs/src/poly/commitment.rs"
+```
 `Params::new(k)` deterministically derives the generators by
 hashing-to-curve with the personalization `"Halo2-Parameters"`.
 Two consequences:
@@ -91,15 +91,15 @@ The struct holds:
 
 `Params::commit` is the workhorse:
 
-**Source:** [`halo2_proofs/src/poly/commitment.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/commitment.rs#L115-L165)
-
+```rust file=../../halo2_proofs/src/poly/commitment.rs#L115-L165 title="halo2_proofs/src/poly/commitment.rs"
+```
 It is just `best_multiexp(values, g)` plus a blinding term
 `r * w`. The Lagrange variant uses `g_lagrange` instead of `g`.
 
 ### 3.3 The `Blind` newtype
 
-**Source:** [`halo2_proofs/src/poly/commitment.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/commitment.rs#L208-L255)
-
+```rust file=../../halo2_proofs/src/poly/commitment.rs#L208-L255 title="halo2_proofs/src/poly/commitment.rs"
+```
 `Blind<F>` is a thin wrapper that overloads `+`, `*`, etc. so that
 the prover can do "blinding arithmetic" with the same expressions
 it uses for the underlying polynomials. The Pedersen blinding for
@@ -108,8 +108,8 @@ $\alpha p_1 + \beta p_2$ is $\alpha r_1 + \beta r_2$; the
 
 ### 3.4 The IPA prover
 
-**Source:** [`halo2_proofs/src/poly/commitment/prover.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/commitment/prover.rs)
-
+```rust file=../../halo2_proofs/src/poly/commitment/prover.rs title="halo2_proofs/src/poly/commitment/prover.rs"
+```
 The protocol, in pseudocode:
 
 ```
@@ -133,8 +133,8 @@ it into an accumulator.
 
 ### 3.5 The IPA verifier
 
-**Source:** [`halo2_proofs/src/poly/commitment/verifier.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/commitment/verifier.rs)
-
+```rust file=../../halo2_proofs/src/poly/commitment/verifier.rs title="halo2_proofs/src/poly/commitment/verifier.rs"
+```
 The verifier returns a `Guard` rather than a boolean. The `Guard`
 holds the pending checks; calling `Guard::use_challenges` runs the
 final MSM. The `BatchVerifier` aggregates many `Guard`s into one
@@ -142,8 +142,8 @@ MSM, dropping per-proof cost from $O(n)$ to $O(\log n)$ amortized.
 
 ### 3.6 The MSM accumulator
 
-**Source:** [`halo2_proofs/src/poly/commitment/msm.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_proofs/src/poly/commitment/msm.rs)
-
+```rust file=../../halo2_proofs/src/poly/commitment/msm.rs title="halo2_proofs/src/poly/commitment/msm.rs"
+```
 `MSM` is a "deferred MSM" type: the verifier records
 $(\text{base}, \text{scalar})$ pairs and runs the actual MSM only
 when forced. This is what enables `BatchVerifier`.
