@@ -1,0 +1,28 @@
+{
+  "name": "halo2-onboarding",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Contribution-oriented onboarding course for the zcash/halo2 repository.",
+  "license": "MIT OR Apache-2.0",
+  "engines": {
+    "node": ">=20.0"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
+    "@easyops-cn/docusaurus-search-local": "^0.55.1",
+    "@mdx-js/react": "^3.1.1",
+    "clsx": "^2.1.1",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "^3.10.1",
+    "@docusaurus/types": "^3.10.1",
+    "prettier": "^3.8.3",
+    "typescript": "^5.9.0"
+  }
+}

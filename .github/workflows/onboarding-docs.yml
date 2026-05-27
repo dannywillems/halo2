@@ -1,0 +1,106 @@
+# Build the onboarding/ Docusaurus site and publish it to the root of the
+# same `onboarding` branch so GitHub Pages can serve it via
+# "Deploy from a branch" -> `onboarding` -> `/ (root)`.
+#
+# IMPORTANT: configure GitHub Pages once in repository Settings:
+#   Source: Deploy from a branch
+#   Branch: onboarding  /  / (root)
+#
+# Source and deploy artefacts share the same branch. The `paths-ignore` block
+# below excludes every file Docusaurus emits at the root, so the deploy commit
+# does NOT re-trigger the workflow. The deploy commit message also carries
+# `[skip ci]` as a defence in depth.
+name: Onboarding docs
+
+on:
+  push:
+    branches: [onboarding]
+    paths-ignore:
+      - 'index.html'
+      - '404.html'
+      - 'assets/**'
+      - 'sitemap.xml'
+      - 'opensearch.xml'
+      - 'manifest.json'
+      - 'search-index-*.json'
+      - 'katex/**'
+      - 'img/**'
+      - 'styles.*.css'
+      - 'runtime~main.*.js'
+      - 'main.*.js'
+      - '.nojekyll'
+      - 'CNAME'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-onboarding-docs
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: onboarding
+        run: npm install --no-audit --no-fund
+
+      - name: Build site
+        working-directory: onboarding
+        run: npx docusaurus build
+
+      - name: Stage build output and publish to branch root
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          set -euo pipefail
+
+          # Move the built site to a tempdir so we can wipe the previous deploy
+          # artefacts from the root without losing it.
+          TMP_BUILD=$(mktemp -d)
+          cp -R onboarding/build/* "$TMP_BUILD"/
+          # Touch .nojekyll so GitHub Pages does not run Jekyll.
+          touch "$TMP_BUILD/.nojekyll"
+
+          # Wipe previous deploy artefacts at the repo root. We never delete
+          # source directories.
+          for artefact in index.html 404.html assets sitemap.xml \
+              opensearch.xml manifest.json katex img styles.css \
+              .nojekyll CNAME; do
+            rm -rf "./$artefact" || true
+          done
+          # Remove hashed bundle files emitted by Docusaurus.
+          find . -maxdepth 1 -type f \( \
+              -name 'search-index-*.json' \
+              -o -name 'runtime~main.*.js' \
+              -o -name 'main.*.js' \
+              -o -name 'styles.*.css' \
+          \) -delete
+
+          # Overlay the new build at the repo root.
+          cp -R "$TMP_BUILD"/. ./
+
+          # Commit and push only if there are changes.
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No deploy changes."
+            exit 0
+          fi
+          git commit -m "docs: deploy onboarding site [skip ci]"
+          git push origin HEAD:onboarding

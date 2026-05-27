@@ -1,0 +1,36 @@
+/**
+ * Tailwind-free, framework-default tokens. Keep this small.
+ */
+
+:root {
+  --ifm-color-primary: #5f4dad;
+  --ifm-color-primary-dark: #56459c;
+  --ifm-color-primary-darker: #524193;
+  --ifm-color-primary-darkest: #443679;
+  --ifm-color-primary-light: #6e5cb8;
+  --ifm-color-primary-lighter: #7665bc;
+  --ifm-color-primary-lightest: #8e80c8;
+  --ifm-code-font-size: 92%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #b4a4ff;
+  --ifm-color-primary-dark: #9e8aff;
+  --ifm-color-primary-darker: #927dff;
+  --ifm-color-primary-darkest: #7158ff;
+  --ifm-color-primary-light: #cabeff;
+  --ifm-color-primary-lighter: #d6cdff;
+  --ifm-color-primary-lightest: #f1edff;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.12);
+}
+
+article .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+article code {
+  word-break: break-word;
+}
