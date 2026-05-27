@@ -46,9 +46,12 @@ self-contained enough to be referenced in isolation. The dependency
 graph the chapter ordering encodes:
 
 0. **Background: Zerocoin -> Orchard**
-   ([protocol-context](./protocol-context)): orient yourself on
-   what the gadgets in chapters 14 and 15 are *for*. Read this
-   before the gadget chapters, ideally first.
+   ([protocol-context](./protocol-context)) and
+   **Orchard transaction format**
+   ([orchard-transaction-format](./orchard-transaction-format)):
+   orient yourself on what the gadgets in chapters 14 and 15 are
+   *for*, and on the on-wire format their proofs end up in. Read
+   these before the gadget chapters, ideally first.
 1. **Workspace map and contribution loop** (chapters 01 and 02): you
    need this to navigate the code and to push a PR.
 2. **Field arithmetic, FFT, MSM, polynomial domains** (03 and 04):

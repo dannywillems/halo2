@@ -306,6 +306,12 @@ defined in
 [zcash/orchard/src/circuit.rs](https://github.com/zcash/orchard/blob/main/src/circuit.rs)
 and is the largest known consumer of `halo2_gadgets`.
 
+For the on-wire shape of an action (which fields are serialized,
+in what order, and how the action differs from a Sapling
+`SpendDescription` / `OutputDescription` or a Sprout `JoinSplit`),
+see the dedicated
+[Orchard Transaction Format](./orchard-transaction-format) chapter.
+
 ## 5. How the halo2_gadgets chips map to Orchard primitives
 
 | Orchard primitive                | Halo2 chip / gadget                                              |
