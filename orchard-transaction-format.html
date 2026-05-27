@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.10.1">
 <title data-rh="true">Orchard Transaction Format | halo2 Onboarding</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://dannywillems.github.io/halo2/img/halo2-social-card.png"><meta data-rh="true" name="twitter:image" content="https://dannywillems.github.io/halo2/img/halo2-social-card.png"><meta data-rh="true" property="og:url" content="https://dannywillems.github.io/halo2/orchard-transaction-format"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Orchard Transaction Format | halo2 Onboarding"><meta data-rh="true" name="description" content="The Orchard bundle and ActionDescription, the V5 transaction layout (ZIP 225), and the field-by-field differences vs Sapling spend/output descriptions and Sprout JoinSplits."><meta data-rh="true" property="og:description" content="The Orchard bundle and ActionDescription, the V5 transaction layout (ZIP 225), and the field-by-field differences vs Sapling spend/output descriptions and Sprout JoinSplits."><link data-rh="true" rel="icon" href="/halo2/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://dannywillems.github.io/halo2/orchard-transaction-format"><link data-rh="true" rel="alternate" href="https://dannywillems.github.io/halo2/orchard-transaction-format" hreflang="en"><link data-rh="true" rel="alternate" href="https://dannywillems.github.io/halo2/orchard-transaction-format" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Orchard Transaction Format","item":"https://dannywillems.github.io/halo2/orchard-transaction-format"}]}</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous"><link rel="stylesheet" href="/halo2/assets/css/styles.f23fb2fc.css">
-<script src="/halo2/assets/js/runtime~main.279cb4ce.js" defer="defer"></script>
+<script src="/halo2/assets/js/runtime~main.138105a2.js" defer="defer"></script>
 <script src="/halo2/assets/js/main.e8fae59d.js" defer="defer"></script>
 </head>
 <body>
@@ -548,19 +548,290 @@ prover witnesses those dummies and proves the dummy predicate
 indistinguishable from one that spends two real notes. This is
 how a transaction that is &quot;only&quot; a shielding still produces
 spends and nullifiers indistinguishable from real activity.</p>
-<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-this-confirms-about-the-format">What this confirms about the format<a href="#what-this-confirms-about-the-format" class="hash-link" aria-label="Direct link to What this confirms about the format" title="Direct link to What this confirms about the format" translate="no">​</a></h4>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="example-c-t-z-consolidation-four-transparent-inputs-b79955d99969">Example C: t-&gt;z consolidation, four transparent inputs (<code>b79955d9...9969</code>)<a href="#example-c-t-z-consolidation-four-transparent-inputs-b79955d99969" class="hash-link" aria-label="Direct link to example-c-t-z-consolidation-four-transparent-inputs-b79955d99969" title="Direct link to example-c-t-z-consolidation-four-transparent-inputs-b79955d99969" translate="no">​</a></h4>
+<p>Block 3357100.</p>
+<ul>
+<li class="">Explorer:
+<a href="https://mainnet.zcashexplorer.app/transactions/b79955d91073290d820e7dca2132856498300fddf5be2c3d456384e4c6a49969" target="_blank" rel="noopener noreferrer" class=""><code>mainnet.zcashexplorer.app/transactions/b79955d9...9969</code></a></li>
+<li class="">Archived raw JSON:
+<a href="/halo2/orchard-tx-examples/b79955d91073290d820e7dca2132856498300fddf5be2c3d456384e4c6a49969.json" target="_blank" rel="noopener noreferrer" class=""><code>/orchard-tx-examples/b799...9969.json</code></a></li>
+<li class="">Total tx size: <strong>9790 bytes</strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>version</code></td><td>5</td></tr><tr><td><code>vin</code> count</td><td><strong>4</strong> (consolidating four prior transparent UTXOs)</td></tr><tr><td><code>vout</code> count</td><td>1 (transparent change to <code>t1Ku2KLyndDPsR32jwnrTMd3yvi9tfFP8ML</code>)</td></tr><tr><td><code>actions</code> count</td><td>2</td></tr><tr><td><code>valueBalanceOrchard</code></td><td><code>-1 309 449 925 zat</code> (negative: pool absorbs ~13.09 ZEC)</td></tr><tr><td><code>anchorOrchard</code></td><td><code>ae2935f1dfd8a24aed7c70df7de3a668eb7a49b1319880dde2bbd9031ae5d82f</code></td></tr></tbody></table>
+<p>The four transparent inputs have values <code>1.5001</code>, <code>1.5412</code>,
+<code>2.28319145</code> and <code>232.68922473</code> ZEC, totalling <code>238.01371318</code> ZEC.
+The single transparent output returns <code>224.91891693</code> ZEC to the
+same wallet. The remaining <code>~13.09 ZEC</code> enters the Orchard pool
+as two new shielded notes.</p>
+<p>Why this example matters: it shows that the Orchard bundle size
+is <strong>independent of how many transparent inputs the transaction
+has</strong>. The transparent-side fan-in is whatever Bitcoin-style
+script logic dictates; the Orchard side stays exactly two
+actions (which is the wallet&#x27;s privacy-padding choice, not a
+consequence of the transparent count).</p>
+<p>Action 0:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>cv</code></td><td><code>428b36c3c06f08d9470b98aef3ab4e105971183a228367d938daeb2be2d1f584</code></td></tr><tr><td><code>nullifier</code></td><td><code>616ef3b62330c64cb378bf245868714e857d9a8d5687ee23e4d7d580e6f6ba36</code></td></tr><tr><td><code>rk</code></td><td><code>7ef26ff3327584acdae27f87e9c77e055b3016e04347b1ccb369f2e8fdb2b51d</code></td></tr><tr><td><code>cmx</code></td><td><code>f698fa99b0135def37f4eda1c7705859301d246dd482d477d9fba2cb8494aa15</code></td></tr><tr><td><code>ephemeralKey</code></td><td><code>61a50a832f09721ff03cea426804d1013eb3b727c38135fce055ec8236d2b39e</code></td></tr></tbody></table>
+<p>Note that <code>anchorOrchard</code> here matches example B&#x27;s anchor
+exactly: both bundles selected the same historical
+note-commitment-tree root. This is allowed by consensus (any
+anchor within the rolling age window is accepted) and is mildly
+useful as a verifier-side cache hit, but it carries no
+cryptographic significance.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="example-d-z-t-deshielding-four-actions-8ca808cd1cbe">Example D: z-&gt;t deshielding, four actions (<code>8ca808cd...1cbe</code>)<a href="#example-d-z-t-deshielding-four-actions-8ca808cd1cbe" class="hash-link" aria-label="Direct link to example-d-z-t-deshielding-four-actions-8ca808cd1cbe" title="Direct link to example-d-z-t-deshielding-four-actions-8ca808cd1cbe" translate="no">​</a></h4>
+<p>Block 3357000.</p>
+<ul>
+<li class="">Explorer:
+<a href="https://mainnet.zcashexplorer.app/transactions/8ca808cdbd9d986949ffb4f2bdd3ad0b6e062597c3afe7199f0c928ce9821cbe" target="_blank" rel="noopener noreferrer" class=""><code>mainnet.zcashexplorer.app/transactions/8ca808cd...1cbe</code></a></li>
+<li class="">Archived raw JSON:
+<a href="/halo2/orchard-tx-examples/8ca808cdbd9d986949ffb4f2bdd3ad0b6e062597c3afe7199f0c928ce9821cbe.json" target="_blank" rel="noopener noreferrer" class=""><code>/orchard-tx-examples/8ca8...1cbe.json</code></a></li>
+<li class="">Total tx size: <strong>15511 bytes</strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>version</code></td><td>5</td></tr><tr><td><code>vin</code> count</td><td>0</td></tr><tr><td><code>vout</code> count</td><td>1 (transparent output <code>t1ZQEGDvsfecozh3LvWGdUrcL8idozig9K9</code>, <code>3.2495003 ZEC</code>)</td></tr><tr><td><code>actions</code> count</td><td><strong>4</strong></td></tr><tr><td><code>valueBalanceOrchard</code></td><td><code>+324 975 030 zat</code> (~+3.25 ZEC leaving the pool)</td></tr><tr><td><code>anchorOrchard</code></td><td><code>aad846cc74c19db033b625533056ab47bcda1adebac77d5060caf922fb24782c</code></td></tr><tr><td><code>proofsOrchard</code> length</td><td><strong>11808 bytes</strong> (vs 7264 bytes for 2-action bundles)</td></tr></tbody></table>
+<p>Action 0:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>cv</code></td><td><code>1429d2ff83c5a938d21f0c678ca9006ff61940b148a3744b9ddfb2aacde1d49f</code></td></tr><tr><td><code>nullifier</code></td><td><code>cfce1e109fa2902b9a1942a07e890fa530ff39ae50815e696614ff6a1e03ab19</code></td></tr><tr><td><code>rk</code></td><td><code>128afa79f1fd183706eebd53e7972131d580e950338a2affa8bab95d6658c726</code></td></tr><tr><td><code>cmx</code></td><td><code>302af08932772b3113f134947393f2f2fe907aafd1f4330720e97451a4b6290e</code></td></tr><tr><td><code>ephemeralKey</code></td><td><code>09ec3c3c6fd34f4c58d2051dda0e2c99348e433672df52ddabcc6e2fa13706b8</code></td></tr></tbody></table>
+<p>This bundle has four actions and pulls 3.25 ZEC out of the pool
+into a single transparent address. Four actions means the wallet
+spent something like 2 real notes (the others are dummies, or it
+spent 3 real notes with one dummy output; the bundle does not
+distinguish). The output side similarly hides whether the 3.25
+ZEC came from one note, two notes, or four.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="example-e-pure-shielded-transfer-with-three-actions-538553e4fd6a">Example E: pure shielded transfer with three actions (<code>538553e4...fd6a</code>)<a href="#example-e-pure-shielded-transfer-with-three-actions-538553e4fd6a" class="hash-link" aria-label="Direct link to example-e-pure-shielded-transfer-with-three-actions-538553e4fd6a" title="Direct link to example-e-pure-shielded-transfer-with-three-actions-538553e4fd6a" translate="no">​</a></h4>
+<p>Block 3357150.</p>
+<ul>
+<li class="">Explorer:
+<a href="https://mainnet.zcashexplorer.app/transactions/538553e4a7892bfc3a2fffdccf22d297b4245cb1add79e43bdd74f98d908fd6a" target="_blank" rel="noopener noreferrer" class=""><code>mainnet.zcashexplorer.app/transactions/538553e4...fd6a</code></a></li>
+<li class="">Archived raw JSON:
+<a href="/halo2/orchard-tx-examples/538553e4a7892bfc3a2fffdccf22d297b4245cb1add79e43bdd74f98d908fd6a.json" target="_blank" rel="noopener noreferrer" class=""><code>/orchard-tx-examples/5385...fd6a.json</code></a></li>
+<li class="">Total tx size: <strong>12321 bytes</strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>version</code></td><td>5</td></tr><tr><td><code>vin</code> / <code>vout</code> count</td><td>0 / 0</td></tr><tr><td><code>actions</code> count</td><td><strong>3</strong></td></tr><tr><td><code>valueBalanceOrchard</code></td><td><code>+15 000 zat</code> (the fee)</td></tr><tr><td><code>proofsOrchard</code> length</td><td><strong>9536 bytes</strong></td></tr></tbody></table>
+<p>Same shape as example A (pure z-&gt;z, no transparent or Sapling
+component) but with three actions instead of two. The wallet
+that built this transaction picked three for unlinkability
+reasons (probably one spend plus two outputs, or one real plus
+two dummies). The on-chain observer sees three nullifiers and
+three commitments without learning how many of each are real.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="proof-size-scaling">Proof-size scaling<a href="#proof-size-scaling" class="hash-link" aria-label="Direct link to Proof-size scaling" title="Direct link to Proof-size scaling" translate="no">​</a></h4>
+<p>Pulling the proof length and action count from all five
+examples:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Example</th><th style="text-align:right">Actions</th><th style="text-align:right"><code>proofsOrchard</code> (bytes)</th><th>Per-action delta vs base</th></tr></thead><tbody><tr><td>A, B, C</td><td style="text-align:right">2</td><td style="text-align:right">7264</td><td>baseline</td></tr><tr><td>E</td><td style="text-align:right">3</td><td style="text-align:right">9536</td><td>+2272</td></tr><tr><td>D</td><td style="text-align:right">4</td><td style="text-align:right">11808</td><td>+2272 (relative to E)</td></tr></tbody></table>
+<p>Each additional action adds exactly <strong>2272 bytes</strong> to the halo2
+proof on mainnet (at this protocol version). This is the
+per-action evaluation and commitment overhead the prover writes
+to the transcript; the constant 7264-byte base covers the
+gate, permutation, lookup, and IPA tail. Note that this is the
+proof size, not the verifier cost: the per-action verifier work
+is dominated by the multi-scalar multiplication, which IPA can
+amortize when batched (see chapter 09).</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-these-five-examples-confirm-about-the-format">What these five examples confirm about the format<a href="#what-these-five-examples-confirm-about-the-format" class="hash-link" aria-label="Direct link to What these five examples confirm about the format" title="Direct link to What these five examples confirm about the format" translate="no">​</a></h4>
 <ul>
 <li class="">Per-action body is exactly 820 bytes (32 + 32 + 32 + 32 + 32 +
 580 + 80), matching the table in section 3.1.</li>
-<li class="">A single 7+ KB halo2 proof covers all actions in the bundle.
-An equivalent Sapling bundle would carry one ~192-byte Groth16
+<li class="">The Orchard bundle size is independent of how many transparent
+inputs and outputs the surrounding transaction has (example C
+has 4 vin, example A has 0).</li>
+<li class="">A single halo2 proof covers all actions in the bundle; the
+proof grows by ~2272 bytes per additional action.</li>
+<li class="">An equivalent Sapling bundle would carry one ~192-byte Groth16
 proof per spend <em>and</em> per output, plus per-description
-overheads.</li>
-<li class="">The anchor is bundle-scoped (one per transaction), not
-per-action.</li>
-<li class=""><code>enableSpends</code> and <code>enableOutputs</code> are nearly always both
-<code>true</code> in the wild; their existence in the byte format is what
-makes output-only and spend-only bundles encodable at all.</li>
+overheads, so the cross-over point in proof size between
+Orchard and Sapling is around 30+ descriptions; below that
+Sapling is smaller, but every action&#x27;s verifier cost is one
+pairing-set in Sapling versus an amortizable MSM in Orchard.</li>
+<li class="">The anchor is bundle-scoped: examples B and C share the same
+anchor across different bundles, which is allowed and
+expected.</li>
+<li class=""><code>enableSpends</code> and <code>enableOutputs</code> are both <code>true</code> in every
+example above; their existence in the byte format is what
+makes output-only and spend-only bundles encodable at all,
+but mainnet wallets do not seem to use that capability in
+practice.</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="36-where-to-look-in-the-code">3.6 Where to look in the code<a href="#36-where-to-look-in-the-code" class="hash-link" aria-label="Direct link to 3.6 Where to look in the code" title="Direct link to 3.6 Where to look in the code" translate="no">​</a></h3>
 <p>The transaction format lives in <code>zcash/librustzcash</code>, not in this
