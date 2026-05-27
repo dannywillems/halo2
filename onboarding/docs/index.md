@@ -88,7 +88,7 @@ Throughout this course we use the following conventions.
 - $\mathsf{Hash}(\cdot) = \mathsf{Blake2b}_{512}(\cdot)$: the
   transcript hash (see chapter 12).
 - $a \mathbin{\|} b$: byte-string concatenation.
-- $a \stackrel{\$}{\leftarrow} S$: $a$ sampled uniformly from $S$.
+- $a \xleftarrow{R} S$: $a$ sampled uniformly at random from $S$.
 
 ## Prerequisites
 

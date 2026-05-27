@@ -7,6 +7,10 @@ on:
 
 jobs:
   deploy:
+    # Only deploy from the canonical upstream. On forks (e.g. the
+    # `dannywillems/halo2` onboarding deployment) this job is skipped so
+    # the fork's GitHub Pages is not overwritten by the halo2 book.
+    if: github.repository == 'zcash/halo2'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
