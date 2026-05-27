@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.10.1">
 <title data-rh="true">Orchard Transaction Format | halo2 Onboarding</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://dannywillems.github.io/halo2/img/halo2-social-card.png"><meta data-rh="true" name="twitter:image" content="https://dannywillems.github.io/halo2/img/halo2-social-card.png"><meta data-rh="true" property="og:url" content="https://dannywillems.github.io/halo2/orchard-transaction-format"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Orchard Transaction Format | halo2 Onboarding"><meta data-rh="true" name="description" content="The Orchard bundle and ActionDescription, the V5 transaction layout (ZIP 225), and the field-by-field differences vs Sapling spend/output descriptions and Sprout JoinSplits."><meta data-rh="true" property="og:description" content="The Orchard bundle and ActionDescription, the V5 transaction layout (ZIP 225), and the field-by-field differences vs Sapling spend/output descriptions and Sprout JoinSplits."><link data-rh="true" rel="icon" href="/halo2/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://dannywillems.github.io/halo2/orchard-transaction-format"><link data-rh="true" rel="alternate" href="https://dannywillems.github.io/halo2/orchard-transaction-format" hreflang="en"><link data-rh="true" rel="alternate" href="https://dannywillems.github.io/halo2/orchard-transaction-format" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Orchard Transaction Format","item":"https://dannywillems.github.io/halo2/orchard-transaction-format"}]}</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" integrity="sha384-vlBdW0r3AcZO/HboRPznQNowvexd3fY8qHOWkBi5q7KGgqJ+F48+DceybYmrVbmB" crossorigin="anonymous"><link rel="stylesheet" href="/halo2/assets/css/styles.f23fb2fc.css">
-<script src="/halo2/assets/js/runtime~main.a714ddab.js" defer="defer"></script>
+<script src="/halo2/assets/js/runtime~main.279cb4ce.js" defer="defer"></script>
 <script src="/halo2/assets/js/main.e8fae59d.js" defer="defer"></script>
 </head>
 <body>
@@ -344,7 +344,225 @@ halo2&#x27;s IPA does not need a structured reference string. This
 was the original motivation for the Pasta cycle and for halo2
 itself (the Halo paper).</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="35-where-to-look-in-the-code">3.5 Where to look in the code<a href="#35-where-to-look-in-the-code" class="hash-link" aria-label="Direct link to 3.5 Where to look in the code" title="Direct link to 3.5 Where to look in the code" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="35-real-world-examples-mainnet">3.5 Real-world examples (mainnet)<a href="#35-real-world-examples-mainnet" class="hash-link" aria-label="Direct link to 3.5 Real-world examples (mainnet)" title="Direct link to 3.5 Real-world examples (mainnet)" translate="no">​</a></h3>
+<p>Two real V5 transactions, both mined in mainnet block 3357450,
+make the format above concrete. Both happen to have exactly two
+actions in their Orchard bundle. The full raw JSON for each is
+archived under
+<a href="https://github.com/dannywillems/halo2/tree/onboarding/onboarding/static/orchard-tx-examples" target="_blank" rel="noopener noreferrer" class=""><code>onboarding/static/orchard-tx-examples/</code></a>
+so the examples remain reproducible even if the explorer is
+unavailable.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="example-a-pure-shielded-transfer-d92c8b0da25f">Example A: pure shielded transfer (<code>d92c8b0d...a25f</code>)<a href="#example-a-pure-shielded-transfer-d92c8b0da25f" class="hash-link" aria-label="Direct link to example-a-pure-shielded-transfer-d92c8b0da25f" title="Direct link to example-a-pure-shielded-transfer-d92c8b0da25f" translate="no">​</a></h4>
+<ul>
+<li class="">Explorer:
+<a href="https://mainnet.zcashexplorer.app/transactions/d92c8b0d37a82bb79e0e2a4e9bdaaf8a6adff8f8597c7befdd783a15a434a25f" target="_blank" rel="noopener noreferrer" class=""><code>mainnet.zcashexplorer.app/transactions/d92c8b0d...a25f</code></a></li>
+<li class="">Archived raw JSON:
+<a href="/halo2/orchard-tx-examples/d92c8b0d37a82bb79e0e2a4e9bdaaf8a6adff8f8597c7befdd783a15a434a25f.json" target="_blank" rel="noopener noreferrer" class=""><code>/orchard-tx-examples/d92c...a25f.json</code></a></li>
+<li class="">Total tx size: <strong>9165 bytes</strong></li>
+</ul>
+<p>Bundle-level fields:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>version</code></td><td>5</td></tr><tr><td><code>vin</code> / <code>vout</code> count</td><td>0 / 0 (no transparent component)</td></tr><tr><td><code>vShieldedSpend / Output</code></td><td>0 / 0 (no Sapling component)</td></tr><tr><td><code>actions</code> count</td><td>2</td></tr><tr><td><code>flagsOrchard</code></td><td><code>enableSpends = true, enableOutputs = true</code></td></tr><tr><td><code>valueBalanceOrchard</code></td><td><code>+10000 zat</code> (<code>+0.0001 ZEC</code>, the fee leaving the Orchard pool)</td></tr><tr><td><code>anchorOrchard</code></td><td><code>5255c4c7e2fbb24ae185caae08177cfdb097d496d8d81f95a5c9cdfcde81f416</code></td></tr><tr><td><code>proofsOrchard</code> length</td><td>7264 bytes (14528 hex chars) for the single halo2 proof</td></tr></tbody></table>
+<p>First action&#x27;s serialized fields:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Bytes</th><th>Value</th></tr></thead><tbody><tr><td><code>cv</code></td><td>32</td><td><code>d493c81198c6a7e2c8b2d2570780bea2656b5d68078f9f655117c21e250cbb15</code></td></tr><tr><td><code>nullifier</code></td><td>32</td><td><code>d07befbcf98f4c0e5da783e1ff29d892bd7073faea0d44f87317c23ae875093a</code></td></tr><tr><td><code>rk</code></td><td>32</td><td><code>c1095f96b593f06a8d9720e5acec432194885677928eb182501139037ca674bc</code></td></tr><tr><td><code>cmx</code></td><td>32</td><td><code>43e1807748ad1f27c44bbfd8544545c3ccecba2269ae20fe95f1c5a6a43a8f3a</code></td></tr><tr><td><code>ephemeralKey</code></td><td>32</td><td><code>a142f7870ceec45203a78f4eedf3a09f95e28e3195a0bc5e0a864060661cddbd</code></td></tr><tr><td><code>encCiphertext</code></td><td>580</td><td><code>94d5dedc...</code> (Note + memo, ChaCha20-Poly1305)</td></tr><tr><td><code>outCiphertext</code></td><td>80</td><td><code>e20d73b6...</code> (OVK-encrypted decryption material)</td></tr></tbody></table>
+<p>Each action contributes <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn><mo>+</mo><mn>32</mn><mo>+</mo><mn>32</mn><mo>+</mo><mn>32</mn><mo>+</mo><mn>32</mn><mo>+</mo><mn>580</mn><mo>+</mo><mn>80</mn><mo>=</mo><mn>820</mn></mrow><annotation encoding="application/x-tex">32 + 32 + 32 + 32 + 32 + 580 + 80 = 820</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em"></span><span class="mord">580</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.6444em"></span><span class="mord">80</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span></span><span class="base"><span class="strut" style="height:0.6444em"></span><span class="mord">820</span></span></span></span>
+bytes to the bundle, matching the spec exactly. The
+<code>spendAuthSig</code> for each action (64 bytes) lives at the bundle
+level in <code>vSpendAuthSigsOrchard</code>.</p>
+<p>What this transaction proves: <code>valueBalanceOrchard = +10000</code> says
+&quot;10,000 zat is moving <em>out of</em> the Orchard pool&quot; — and since the
+transaction has no transparent or Sapling outputs, that 10,000
+zat is the miner fee. The two actions otherwise net to zero (one
+spend equals one output), so the bundle is consistent with &quot;spend
+two Orchard notes, create two new Orchard notes, total value
+equals input minus 10000&quot;.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="example-b-shielding-t-z-transaction-714c7b487685">Example B: shielding (T-&gt;Z) transaction (<code>714c7b48...7685</code>)<a href="#example-b-shielding-t-z-transaction-714c7b487685" class="hash-link" aria-label="Direct link to example-b-shielding-t-z-transaction-714c7b487685" title="Direct link to example-b-shielding-t-z-transaction-714c7b487685" translate="no">​</a></h4>
+<p>Same block 3357450.</p>
+<ul>
+<li class="">Explorer:
+<a href="https://mainnet.zcashexplorer.app/transactions/714c7b4868a3c9df45de4add27fc8fbf4ce49190069f853efa96a31cadf47685" target="_blank" rel="noopener noreferrer" class=""><code>mainnet.zcashexplorer.app/transactions/714c7b48...7685</code></a></li>
+<li class="">Archived raw JSON:
+<a href="/halo2/orchard-tx-examples/714c7b4868a3c9df45de4add27fc8fbf4ce49190069f853efa96a31cadf47685.json" target="_blank" rel="noopener noreferrer" class=""><code>/orchard-tx-examples/714c...7685.json</code></a></li>
+<li class="">Total tx size: <strong>9313 bytes</strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>version</code></td><td>5</td></tr><tr><td><code>vin</code> count</td><td>1 (transparent input <code>t1a4eKkm768xAH6PKmC1goHys3rh7MiZcea</code>, value <code>0.12006222 ZEC</code> = 12 006 222 zat)</td></tr><tr><td><code>vout</code> count</td><td>0</td></tr><tr><td><code>actions</code> count</td><td>2</td></tr><tr><td><code>flagsOrchard</code></td><td><code>enableSpends = true, enableOutputs = true</code></td></tr><tr><td><code>valueBalanceOrchard</code></td><td><code>-11991222 zat</code> (negative = value flowing <em>into</em> the Orchard pool)</td></tr><tr><td><code>anchorOrchard</code></td><td><code>ae2935f1dfd8a24aed7c70df7de3a668eb7a49b1319880dde2bbd9031ae5d82f</code></td></tr></tbody></table>
+<p>First action:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><code>cv</code></td><td><code>e59a67c425fba74cccc3a2d1e1716c971cbcefa1209933889c363612211c69ac</code></td></tr><tr><td><code>nullifier</code></td><td><code>7c55b6fc9a9061cf1e0a657434b1a0e8e4cc9bc478744f23a996800e37a94321</code></td></tr><tr><td><code>rk</code></td><td><code>3cd24d54bc8f6f64d89b32d7125f05f0e952858d88fecd0d50143d1e0b855487</code></td></tr><tr><td><code>cmx</code></td><td><code>b80db92198058a36273dab3543819bf648fe8f7a08c1a824613ff68b1b957c3b</code></td></tr><tr><td><code>ephemeralKey</code></td><td><code>ee006dc5904320c8c446ef898b9473c0313e3e8851e44c9f671dd01dc366ed08</code></td></tr></tbody></table>
+<p>Consensus-balance check, in zat:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain">transparent_in      = 12 006 222</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">transparent_out     =          0</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">valueBalanceOrchard = -11 991 222   (negative: pool absorbs value)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">fee = transparent_in - transparent_out - (- valueBalanceOrchard)</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    = 12 006 222 - 0 - 11 991 222</span><br></div><div class="token-line" style="color:#393A34"><span class="token plain">    = 15 000 zat   (0.00015 ZEC)</span><br></div></code></pre></div></div>
+<p><code>enableSpends = true</code> even though there are no real Orchard
+inputs: the two actions still have <em>dummy</em> spend sides. The
+prover witnesses those dummies and proves the dummy predicate
+(value zero, random key); on the wire the bundle is
+indistinguishable from one that spends two real notes. This is
+how a transaction that is &quot;only&quot; a shielding still produces
+spends and nullifiers indistinguishable from real activity.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-this-confirms-about-the-format">What this confirms about the format<a href="#what-this-confirms-about-the-format" class="hash-link" aria-label="Direct link to What this confirms about the format" title="Direct link to What this confirms about the format" translate="no">​</a></h4>
+<ul>
+<li class="">Per-action body is exactly 820 bytes (32 + 32 + 32 + 32 + 32 +
+580 + 80), matching the table in section 3.1.</li>
+<li class="">A single 7+ KB halo2 proof covers all actions in the bundle.
+An equivalent Sapling bundle would carry one ~192-byte Groth16
+proof per spend <em>and</em> per output, plus per-description
+overheads.</li>
+<li class="">The anchor is bundle-scoped (one per transaction), not
+per-action.</li>
+<li class=""><code>enableSpends</code> and <code>enableOutputs</code> are nearly always both
+<code>true</code> in the wild; their existence in the byte format is what
+makes output-only and spend-only bundles encodable at all.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="36-where-to-look-in-the-code">3.6 Where to look in the code<a href="#36-where-to-look-in-the-code" class="hash-link" aria-label="Direct link to 3.6 Where to look in the code" title="Direct link to 3.6 Where to look in the code" translate="no">​</a></h3>
 <p>The transaction format lives in <code>zcash/librustzcash</code>, not in this
 repository. Pointers:</p>
 <ul>
@@ -363,7 +581,11 @@ input layout are what bind the table in section 3.2.</li>
 <div class="language-rust codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockTitle_OeMC">halo2_gadgets/src/sinsemilla/merkle.rs (the anchor&#x27;s hash personalization)</div><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-rust codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">/// SWU hash-to-curve personalization for the Merkle CRH generator</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">pub</span><span class="token plain"> </span><span class="token keyword" style="color:#00009f">const</span><span class="token plain"> </span><span class="token constant" style="color:#36acaa">MERKLE_CRH_PERSONALIZATION</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">&amp;</span><span class="token keyword" style="color:#00009f">str</span><span class="token plain"> </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;z.cash:Orchard-MerkleCRH&quot;</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></div><div class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">/// Instructions to check the validity of a Merkle path of a given `PATH_LENGTH`.</span><br></div></code></pre></div></div>
 <p><code>MERKLE_DEPTH_ORCHARD = 32</code> (in
 <a href="https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/sinsemilla/merkle.rs#L210" target="_blank" rel="noopener noreferrer" class=""><code>halo2_gadgets/src/sinsemilla/merkle.rs</code></a>)
-is exactly the depth that <code>anchorOrchard</code> is the root of.</p>
+is exactly the depth that <code>anchorOrchard</code> is the root of. The two
+anchor values quoted in section 3.5
+(<code>5255c4c7...</code> and <code>ae2935f1...</code>) are each 32-byte outputs of
+<code>MerkleCRH^Orchard</code> applied 32 times up from a leaf produced by
+this chip.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-failure-modes">4. Failure modes<a href="#4-failure-modes" class="hash-link" aria-label="Direct link to 4. Failure modes" title="Direct link to 4. Failure modes" translate="no">​</a></h2>
 <ul>
 <li class=""><strong>Mixing bundle flags with action contents.</strong> <code>enableSpends = 0</code> does <em>not</em> allow you to skip the spend-side witness in the
@@ -457,6 +679,6 @@ action packing.</li>
 for a user-level walkthrough of the format choices.</li>
 <li class=""><a href="https://github.com/zcash/zips/issues/352" target="_blank" rel="noopener noreferrer" class="">Daira Hopwood&#x27;s analysis of action-symmetry vs split spend/output</a>
 for the original design discussion that led to actions.</li>
-</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/dannywillems/halo2/edit/onboarding/onboarding/docs/orchard-transaction-format.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/halo2/protocol-context"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Background: From Zerocoin to Orchard</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/halo2/crate-map"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Crate and Module Map</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#1-why-this-chapter-exists" class="table-of-contents__link toc-highlight">1. Why this chapter exists</a></li><li><a href="#2-definitions" class="table-of-contents__link toc-highlight">2. Definitions</a></li><li><a href="#3-the-code" class="table-of-contents__link toc-highlight">3. The code</a><ul><li><a href="#31-bundle-and-action-structure-in-zcashorchard" class="table-of-contents__link toc-highlight">3.1 Bundle and action structure (in zcash/orchard)</a></li><li><a href="#32-what-the-halo2-proof-binds" class="table-of-contents__link toc-highlight">3.2 What the halo2 proof binds</a></li><li><a href="#33-bundle-level-proof-verification" class="table-of-contents__link toc-highlight">3.3 Bundle-level proof verification</a></li><li><a href="#34-the-differences-field-by-field" class="table-of-contents__link toc-highlight">3.4 The differences, field by field</a></li><li><a href="#35-where-to-look-in-the-code" class="table-of-contents__link toc-highlight">3.5 Where to look in the code</a></li></ul></li><li><a href="#4-failure-modes" class="table-of-contents__link toc-highlight">4. Failure modes</a></li><li><a href="#5-spec-pointers" class="table-of-contents__link toc-highlight">5. Spec pointers</a></li><li><a href="#6-exercises" class="table-of-contents__link toc-highlight">6. Exercises</a><ul><li><a href="#answers-in-the-code" class="table-of-contents__link toc-highlight">Answers in the code</a></li></ul></li><li><a href="#7-further-reading" class="table-of-contents__link toc-highlight">7. Further reading</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Repository</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/zcash/halo2" target="_blank" rel="noopener noreferrer" class="footer__link-item">Upstream zcash/halo2<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/zcash/halo2/commit/32a87582dfb0ad9364ef3ffe71751ceab2a502ea" target="_blank" rel="noopener noreferrer" class="footer__link-item">Pinned commit<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/dannywillems/halo2/tree/onboarding" target="_blank" rel="noopener noreferrer" class="footer__link-item">Course source (fork)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Specifications</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://eprint.iacr.org/2019/1021" target="_blank" rel="noopener noreferrer" class="footer__link-item">Halo paper (eprint 2019/1021)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://eprint.iacr.org/2019/953" target="_blank" rel="noopener noreferrer" class="footer__link-item">PLONK paper (eprint 2019/953)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://zcash.github.io/halo2/" target="_blank" rel="noopener noreferrer" class="footer__link-item">The Halo 2 Book<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Course content licensed MIT/Apache 2.0. halo2 is (c) Electric Coin Company and contributors.</div></div></div></footer></div>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/dannywillems/halo2/edit/onboarding/onboarding/docs/orchard-transaction-format.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/halo2/protocol-context"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Background: From Zerocoin to Orchard</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/halo2/crate-map"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Crate and Module Map</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#1-why-this-chapter-exists" class="table-of-contents__link toc-highlight">1. Why this chapter exists</a></li><li><a href="#2-definitions" class="table-of-contents__link toc-highlight">2. Definitions</a></li><li><a href="#3-the-code" class="table-of-contents__link toc-highlight">3. The code</a><ul><li><a href="#31-bundle-and-action-structure-in-zcashorchard" class="table-of-contents__link toc-highlight">3.1 Bundle and action structure (in zcash/orchard)</a></li><li><a href="#32-what-the-halo2-proof-binds" class="table-of-contents__link toc-highlight">3.2 What the halo2 proof binds</a></li><li><a href="#33-bundle-level-proof-verification" class="table-of-contents__link toc-highlight">3.3 Bundle-level proof verification</a></li><li><a href="#34-the-differences-field-by-field" class="table-of-contents__link toc-highlight">3.4 The differences, field by field</a></li><li><a href="#35-real-world-examples-mainnet" class="table-of-contents__link toc-highlight">3.5 Real-world examples (mainnet)</a></li><li><a href="#36-where-to-look-in-the-code" class="table-of-contents__link toc-highlight">3.6 Where to look in the code</a></li></ul></li><li><a href="#4-failure-modes" class="table-of-contents__link toc-highlight">4. Failure modes</a></li><li><a href="#5-spec-pointers" class="table-of-contents__link toc-highlight">5. Spec pointers</a></li><li><a href="#6-exercises" class="table-of-contents__link toc-highlight">6. Exercises</a><ul><li><a href="#answers-in-the-code" class="table-of-contents__link toc-highlight">Answers in the code</a></li></ul></li><li><a href="#7-further-reading" class="table-of-contents__link toc-highlight">7. Further reading</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Repository</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/zcash/halo2" target="_blank" rel="noopener noreferrer" class="footer__link-item">Upstream zcash/halo2<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/zcash/halo2/commit/32a87582dfb0ad9364ef3ffe71751ceab2a502ea" target="_blank" rel="noopener noreferrer" class="footer__link-item">Pinned commit<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/dannywillems/halo2/tree/onboarding" target="_blank" rel="noopener noreferrer" class="footer__link-item">Course source (fork)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Specifications</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://eprint.iacr.org/2019/1021" target="_blank" rel="noopener noreferrer" class="footer__link-item">Halo paper (eprint 2019/1021)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://eprint.iacr.org/2019/953" target="_blank" rel="noopener noreferrer" class="footer__link-item">PLONK paper (eprint 2019/953)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://zcash.github.io/halo2/" target="_blank" rel="noopener noreferrer" class="footer__link-item">The Halo 2 Book<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Course content licensed MIT/Apache 2.0. halo2 is (c) Electric Coin Company and contributors.</div></div></div></footer></div>
 </body>
 </html>
