@@ -240,7 +240,126 @@ side by side.
   was the original motivation for the Pasta cycle and for halo2
   itself (the Halo paper).
 
-### 3.5 Where to look in the code
+### 3.5 Real-world examples (mainnet)
+
+Two real V5 transactions, both mined in mainnet block 3357450,
+make the format above concrete. Both happen to have exactly two
+actions in their Orchard bundle. The full raw JSON for each is
+archived under
+[`onboarding/static/orchard-tx-examples/`](https://github.com/dannywillems/halo2/tree/onboarding/onboarding/static/orchard-tx-examples)
+so the examples remain reproducible even if the explorer is
+unavailable.
+
+#### Example A: pure shielded transfer (`d92c8b0d...a25f`)
+
+- Explorer:
+  [`mainnet.zcashexplorer.app/transactions/d92c8b0d...a25f`](https://mainnet.zcashexplorer.app/transactions/d92c8b0d37a82bb79e0e2a4e9bdaaf8a6adff8f8597c7befdd783a15a434a25f)
+- Archived raw JSON:
+  [`/orchard-tx-examples/d92c...a25f.json`](pathname:///orchard-tx-examples/d92c8b0d37a82bb79e0e2a4e9bdaaf8a6adff8f8597c7befdd783a15a434a25f.json)
+- Total tx size: **9165 bytes**
+
+Bundle-level fields:
+
+| Field                     | Value                                                                |
+| ------------------------- | -------------------------------------------------------------------- |
+| `version`                 | 5                                                                    |
+| `vin` / `vout` count      | 0 / 0 (no transparent component)                                     |
+| `vShieldedSpend / Output` | 0 / 0 (no Sapling component)                                         |
+| `actions` count           | 2                                                                    |
+| `flagsOrchard`            | `enableSpends = true, enableOutputs = true`                          |
+| `valueBalanceOrchard`     | `+10000 zat` (`+0.0001 ZEC`, the fee leaving the Orchard pool)       |
+| `anchorOrchard`           | `5255c4c7e2fbb24ae185caae08177cfdb097d496d8d81f95a5c9cdfcde81f416`   |
+| `proofsOrchard` length    | 7264 bytes (14528 hex chars) for the single halo2 proof              |
+
+First action's serialized fields:
+
+| Field           | Bytes | Value                                                                |
+| --------------- | ----- | -------------------------------------------------------------------- |
+| `cv`            | 32    | `d493c81198c6a7e2c8b2d2570780bea2656b5d68078f9f655117c21e250cbb15`   |
+| `nullifier`     | 32    | `d07befbcf98f4c0e5da783e1ff29d892bd7073faea0d44f87317c23ae875093a`   |
+| `rk`            | 32    | `c1095f96b593f06a8d9720e5acec432194885677928eb182501139037ca674bc`   |
+| `cmx`           | 32    | `43e1807748ad1f27c44bbfd8544545c3ccecba2269ae20fe95f1c5a6a43a8f3a`   |
+| `ephemeralKey`  | 32    | `a142f7870ceec45203a78f4eedf3a09f95e28e3195a0bc5e0a864060661cddbd`   |
+| `encCiphertext` | 580   | `94d5dedc...` (Note + memo, ChaCha20-Poly1305)                       |
+| `outCiphertext` | 80    | `e20d73b6...` (OVK-encrypted decryption material)                    |
+
+Each action contributes $32 + 32 + 32 + 32 + 32 + 580 + 80 = 820$
+bytes to the bundle, matching the spec exactly. The
+`spendAuthSig` for each action (64 bytes) lives at the bundle
+level in `vSpendAuthSigsOrchard`.
+
+What this transaction proves: `valueBalanceOrchard = +10000` says
+"10,000 zat is moving *out of* the Orchard pool" — and since the
+transaction has no transparent or Sapling outputs, that 10,000
+zat is the miner fee. The two actions otherwise net to zero (one
+spend equals one output), so the bundle is consistent with "spend
+two Orchard notes, create two new Orchard notes, total value
+equals input minus 10000".
+
+#### Example B: shielding (T->Z) transaction (`714c7b48...7685`)
+
+Same block 3357450.
+
+- Explorer:
+  [`mainnet.zcashexplorer.app/transactions/714c7b48...7685`](https://mainnet.zcashexplorer.app/transactions/714c7b4868a3c9df45de4add27fc8fbf4ce49190069f853efa96a31cadf47685)
+- Archived raw JSON:
+  [`/orchard-tx-examples/714c...7685.json`](pathname:///orchard-tx-examples/714c7b4868a3c9df45de4add27fc8fbf4ce49190069f853efa96a31cadf47685.json)
+- Total tx size: **9313 bytes**
+
+| Field                   | Value                                                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- |
+| `version`               | 5                                                                                                    |
+| `vin` count             | 1 (transparent input `t1a4eKkm768xAH6PKmC1goHys3rh7MiZcea`, value `0.12006222 ZEC` = 12 006 222 zat) |
+| `vout` count            | 0                                                                                                    |
+| `actions` count         | 2                                                                                                    |
+| `flagsOrchard`          | `enableSpends = true, enableOutputs = true`                                                          |
+| `valueBalanceOrchard`   | `-11991222 zat` (negative = value flowing *into* the Orchard pool)                                   |
+| `anchorOrchard`         | `ae2935f1dfd8a24aed7c70df7de3a668eb7a49b1319880dde2bbd9031ae5d82f`                                   |
+
+First action:
+
+| Field          | Value                                                                |
+| -------------- | -------------------------------------------------------------------- |
+| `cv`           | `e59a67c425fba74cccc3a2d1e1716c971cbcefa1209933889c363612211c69ac`   |
+| `nullifier`    | `7c55b6fc9a9061cf1e0a657434b1a0e8e4cc9bc478744f23a996800e37a94321`   |
+| `rk`           | `3cd24d54bc8f6f64d89b32d7125f05f0e952858d88fecd0d50143d1e0b855487`   |
+| `cmx`          | `b80db92198058a36273dab3543819bf648fe8f7a08c1a824613ff68b1b957c3b`   |
+| `ephemeralKey` | `ee006dc5904320c8c446ef898b9473c0313e3e8851e44c9f671dd01dc366ed08`   |
+
+Consensus-balance check, in zat:
+
+```text
+transparent_in      = 12 006 222
+transparent_out     =          0
+valueBalanceOrchard = -11 991 222   (negative: pool absorbs value)
+fee = transparent_in - transparent_out - (- valueBalanceOrchard)
+    = 12 006 222 - 0 - 11 991 222
+    = 15 000 zat   (0.00015 ZEC)
+```
+
+`enableSpends = true` even though there are no real Orchard
+inputs: the two actions still have *dummy* spend sides. The
+prover witnesses those dummies and proves the dummy predicate
+(value zero, random key); on the wire the bundle is
+indistinguishable from one that spends two real notes. This is
+how a transaction that is "only" a shielding still produces
+spends and nullifiers indistinguishable from real activity.
+
+#### What this confirms about the format
+
+- Per-action body is exactly 820 bytes (32 + 32 + 32 + 32 + 32 +
+  580 + 80), matching the table in section 3.1.
+- A single 7+ KB halo2 proof covers all actions in the bundle.
+  An equivalent Sapling bundle would carry one ~192-byte Groth16
+  proof per spend *and* per output, plus per-description
+  overheads.
+- The anchor is bundle-scoped (one per transaction), not
+  per-action.
+- `enableSpends` and `enableOutputs` are nearly always both
+  `true` in the wild; their existence in the byte format is what
+  makes output-only and spend-only bundles encodable at all.
+
+### 3.6 Where to look in the code
 
 The transaction format lives in `zcash/librustzcash`, not in this
 repository. Pointers:
@@ -263,7 +382,11 @@ For halo2-side code that the format ultimately reaches:
 
 `MERKLE_DEPTH_ORCHARD = 32` (in
 [`halo2_gadgets/src/sinsemilla/merkle.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/sinsemilla/merkle.rs#L210))
-is exactly the depth that `anchorOrchard` is the root of.
+is exactly the depth that `anchorOrchard` is the root of. The two
+anchor values quoted in section 3.5
+(`5255c4c7...` and `ae2935f1...`) are each 32-byte outputs of
+`MerkleCRH^Orchard` applied 32 times up from a leaf produced by
+this chip.
 
 ## 4. Failure modes
 
