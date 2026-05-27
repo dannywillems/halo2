@@ -118,6 +118,35 @@ size $2^K$. It is one of the most-touched files in the repo (see
 hot files in chapter 02); changes here affect many downstream
 chips.
 
+### 3.7 Where this fits in Orchard
+
+The ECC chip exists because every consensus-critical Orchard
+primitive that touches a curve point is constrained through it.
+See [the protocol-context chapter](./protocol-context) for the
+underlying definitions; the mapping is:
+
+| Orchard primitive ([spec](https://zips.z.cash/protocol/protocol.pdf))            | Operation on Pallas                                                            | Chip method                                                |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| `nf = Extract([PRF^nfOrchard(nk, rho) + psi] K^Orchard + cm)`                    | fixed-base mul on $K^{\mathsf{Orchard}}$, complete add, $x$-coord extract     | `mul_fixed`, `add`, `X::from(...)`                         |
+| `cv = [v] V^Orchard + [rcv] R^Orchard`                                           | fixed-base **short-signed** mul for $v$, fixed-base mul for $\mathsf{rcv}$, complete add | `mul_fixed_short`, `mul_fixed`, `add`               |
+| `rk = ak + [alpha] SpendAuthG`                                                   | variable-base mul + complete add                                               | `mul`, `add`                                                |
+| `cm = NoteCommit(...)` randomness $[\mathsf{rcm}] R^{\mathsf{Note}}$            | fixed-base mul, then a Sinsemilla evaluation (chapter 15)                      | `mul_fixed` (the ECC half)                                  |
+| Sinsemilla accumulator step $P \leftarrow P + Q_i$ when $P \neq Q_i$            | incomplete add (faster, valid by Sinsemilla's pre-image argument)              | `add_incomplete` (used internally by `SinsemillaChip`)      |
+
+This is why the chip exposes three scalar types: $v$ is 64-bit
+*signed* (hence `ScalarFixedShort`); $\mathsf{rcv}$ and $\mathsf{rcm}$ are
+full 255-bit scalars (`ScalarFixed`); the spend-auth randomizer
+$\alpha$ is a witnessed full-width scalar (`ScalarVar`). The
+short-signed variant exists exclusively to make the value
+commitment efficient.
+
+The `Extract_P` operation that turns the nullifier curve point
+into a field element is implemented as the `X` associated type
+on `EccInstructions` and the `Point::extract_p` method on
+`EccChip`. The reason it exists at all is to let the nullifier
+fit in a single Pallas base-field element so it can be hashed
+into the next action's $\rho$.
+
 ## 4. Failure modes
 
 - **Using `add_incomplete` for inputs that may collide.** If

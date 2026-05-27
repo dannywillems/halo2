@@ -45,6 +45,10 @@ The chapters are designed to be read in order, but each one is
 self-contained enough to be referenced in isolation. The dependency
 graph the chapter ordering encodes:
 
+0. **Background: Zerocoin -> Orchard**
+   ([protocol-context](./protocol-context)): orient yourself on
+   what the gadgets in chapters 14 and 15 are *for*. Read this
+   before the gadget chapters, ideally first.
 1. **Workspace map and contribution loop** (chapters 01 and 02): you
    need this to navigate the code and to push a PR.
 2. **Field arithmetic, FFT, MSM, polynomial domains** (03 and 04):
@@ -62,8 +66,8 @@ graph the chapter ordering encodes:
 8. **Study plan and contribution scenarios** (16): two weeks of
    exercises that converge on a real PR.
 
-If you only have one hour, read chapter 02 (the build loop) and the
-PLONKish arithmetization in chapter 05.
+If you only have one hour, read the protocol context chapter and
+the PLONKish arithmetization in chapter 05.
 
 ## Notation
 

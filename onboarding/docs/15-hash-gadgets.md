@@ -129,6 +129,47 @@ order of $2^{16}$ table rows (mostly shared across all SHA-256
 invocations in the circuit), plus a few thousand gate rows per
 block.
 
+### 3.7 Where this fits in Orchard
+
+Each hash family is chosen for a specific Orchard primitive. See
+[the protocol-context chapter](./protocol-context) for the
+underlying definitions; the mapping is:
+
+| Orchard primitive ([spec](https://zips.z.cash/protocol/protocol.pdf))                            | Hash family             | Chip                                                              |
+| ------------------------------------------------------------------------------------------------ | ----------------------- | ----------------------------------------------------------------- |
+| `NoteCommit^Orchard` (the note commitment)                                                       | `SinsemillaCommit`       | `halo2_gadgets::sinsemilla::CommitDomain`                          |
+| `MerkleCRH^Orchard` (per-layer Merkle hash)                                                      | Sinsemilla hash         | `halo2_gadgets::sinsemilla::merkle::MerklePath`                    |
+| `Commit^ivk` (incoming viewing key derivation)                                                   | `SinsemillaCommit`       | `halo2_gadgets::sinsemilla::CommitDomain`                          |
+| `PRF^nfOrchard(nk, rho)` (nullifier scalar)                                                      | Poseidon                | `halo2_gadgets::poseidon::Hash` over `Pow5Chip`                    |
+| Note encryption key derivation `KDF^Orchard`                                                     | Blake2b (out-of-circuit) | (no in-circuit chip; runs in the wallet)                           |
+| Sapling-pool / Bitcoin / Zcash interop hashing                                                   | SHA-256                 | `halo2_gadgets::sha256::Table16Chip` (feature `unstable-sha256-gadget`) |
+
+This is why Sinsemilla and Poseidon dominate this chapter: every
+*in-circuit* Orchard hash is one of those two. SHA-256 is in the
+crate for legacy and interop reasons (e.g. proving statements
+about transparent-pool addresses), but Orchard itself does not
+use it on the proving side.
+
+The Merkle-layer personalization that
+`hash_to_point.rs` enforces is what binds a leaf to its layer
+number; without it, a forged `MerklePath` could move a commitment
+up or down the tree. The Orchard tree is fixed-depth
+`MERKLE_DEPTH_ORCHARD = 32`; the same constant appears verbatim
+in [`sinsemilla/merkle.rs`](https://github.com/zcash/halo2/blob/32a87582dfb0ad9364ef3ffe71751ceab2a502ea/halo2_gadgets/src/sinsemilla/merkle.rs#L210)
+and in the Zcash Protocol Specification's "MerkleCRH^Orchard"
+section.
+
+The Poseidon `Spec` that Orchard actually uses is
+`P128Pow5T3` (8 full rounds, 56 partial rounds, x^5 S-box),
+imported in the chip's tests under the alias `OrchardNullifier`:
+
+```rust file=../../halo2_gadgets/src/poseidon/pow5.rs#L613-L617 title="halo2_gadgets/src/poseidon/pow5.rs"
+```
+
+That alias is the most explicit Orchard reference in the crate;
+treat it as a flag that whatever the test is exercising will
+appear in the deployed Orchard circuit.
+
 ## 4. Failure modes
 
 - **Mismatched `Spec`.** The in-circuit `Pow5Chip` and the
