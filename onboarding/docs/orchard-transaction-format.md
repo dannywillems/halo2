@@ -345,19 +345,160 @@ indistinguishable from one that spends two real notes. This is
 how a transaction that is "only" a shielding still produces
 spends and nullifiers indistinguishable from real activity.
 
-#### What this confirms about the format
+#### Example C: t->z consolidation, four transparent inputs (`b79955d9...9969`)
+
+Block 3357100.
+
+- Explorer:
+  [`mainnet.zcashexplorer.app/transactions/b79955d9...9969`](https://mainnet.zcashexplorer.app/transactions/b79955d91073290d820e7dca2132856498300fddf5be2c3d456384e4c6a49969)
+- Archived raw JSON:
+  [`/orchard-tx-examples/b799...9969.json`](pathname:///orchard-tx-examples/b79955d91073290d820e7dca2132856498300fddf5be2c3d456384e4c6a49969.json)
+- Total tx size: **9790 bytes**
+
+| Field                   | Value                                                                |
+| ----------------------- | -------------------------------------------------------------------- |
+| `version`               | 5                                                                    |
+| `vin` count             | **4** (consolidating four prior transparent UTXOs)                   |
+| `vout` count            | 1 (transparent change to `t1Ku2KLyndDPsR32jwnrTMd3yvi9tfFP8ML`)      |
+| `actions` count         | 2                                                                    |
+| `valueBalanceOrchard`   | `-1 309 449 925 zat` (negative: pool absorbs ~13.09 ZEC)             |
+| `anchorOrchard`         | `ae2935f1dfd8a24aed7c70df7de3a668eb7a49b1319880dde2bbd9031ae5d82f`   |
+
+The four transparent inputs have values `1.5001`, `1.5412`,
+`2.28319145` and `232.68922473` ZEC, totalling `238.01371318` ZEC.
+The single transparent output returns `224.91891693` ZEC to the
+same wallet. The remaining `~13.09 ZEC` enters the Orchard pool
+as two new shielded notes.
+
+Why this example matters: it shows that the Orchard bundle size
+is **independent of how many transparent inputs the transaction
+has**. The transparent-side fan-in is whatever Bitcoin-style
+script logic dictates; the Orchard side stays exactly two
+actions (which is the wallet's privacy-padding choice, not a
+consequence of the transparent count).
+
+Action 0:
+
+| Field          | Value                                                                |
+| -------------- | -------------------------------------------------------------------- |
+| `cv`           | `428b36c3c06f08d9470b98aef3ab4e105971183a228367d938daeb2be2d1f584`   |
+| `nullifier`    | `616ef3b62330c64cb378bf245868714e857d9a8d5687ee23e4d7d580e6f6ba36`   |
+| `rk`           | `7ef26ff3327584acdae27f87e9c77e055b3016e04347b1ccb369f2e8fdb2b51d`   |
+| `cmx`          | `f698fa99b0135def37f4eda1c7705859301d246dd482d477d9fba2cb8494aa15`   |
+| `ephemeralKey` | `61a50a832f09721ff03cea426804d1013eb3b727c38135fce055ec8236d2b39e`   |
+
+Note that `anchorOrchard` here matches example B's anchor
+exactly: both bundles selected the same historical
+note-commitment-tree root. This is allowed by consensus (any
+anchor within the rolling age window is accepted) and is mildly
+useful as a verifier-side cache hit, but it carries no
+cryptographic significance.
+
+#### Example D: z->t deshielding, four actions (`8ca808cd...1cbe`)
+
+Block 3357000.
+
+- Explorer:
+  [`mainnet.zcashexplorer.app/transactions/8ca808cd...1cbe`](https://mainnet.zcashexplorer.app/transactions/8ca808cdbd9d986949ffb4f2bdd3ad0b6e062597c3afe7199f0c928ce9821cbe)
+- Archived raw JSON:
+  [`/orchard-tx-examples/8ca8...1cbe.json`](pathname:///orchard-tx-examples/8ca808cdbd9d986949ffb4f2bdd3ad0b6e062597c3afe7199f0c928ce9821cbe.json)
+- Total tx size: **15511 bytes**
+
+| Field                   | Value                                                                |
+| ----------------------- | -------------------------------------------------------------------- |
+| `version`               | 5                                                                    |
+| `vin` count             | 0                                                                    |
+| `vout` count            | 1 (transparent output `t1ZQEGDvsfecozh3LvWGdUrcL8idozig9K9`, `3.2495003 ZEC`) |
+| `actions` count         | **4**                                                                |
+| `valueBalanceOrchard`   | `+324 975 030 zat` (~+3.25 ZEC leaving the pool)                     |
+| `anchorOrchard`         | `aad846cc74c19db033b625533056ab47bcda1adebac77d5060caf922fb24782c`   |
+| `proofsOrchard` length  | **11808 bytes** (vs 7264 bytes for 2-action bundles)                 |
+
+Action 0:
+
+| Field          | Value                                                                |
+| -------------- | -------------------------------------------------------------------- |
+| `cv`           | `1429d2ff83c5a938d21f0c678ca9006ff61940b148a3744b9ddfb2aacde1d49f`   |
+| `nullifier`    | `cfce1e109fa2902b9a1942a07e890fa530ff39ae50815e696614ff6a1e03ab19`   |
+| `rk`           | `128afa79f1fd183706eebd53e7972131d580e950338a2affa8bab95d6658c726`   |
+| `cmx`          | `302af08932772b3113f134947393f2f2fe907aafd1f4330720e97451a4b6290e`   |
+| `ephemeralKey` | `09ec3c3c6fd34f4c58d2051dda0e2c99348e433672df52ddabcc6e2fa13706b8`   |
+
+This bundle has four actions and pulls 3.25 ZEC out of the pool
+into a single transparent address. Four actions means the wallet
+spent something like 2 real notes (the others are dummies, or it
+spent 3 real notes with one dummy output; the bundle does not
+distinguish). The output side similarly hides whether the 3.25
+ZEC came from one note, two notes, or four.
+
+#### Example E: pure shielded transfer with three actions (`538553e4...fd6a`)
+
+Block 3357150.
+
+- Explorer:
+  [`mainnet.zcashexplorer.app/transactions/538553e4...fd6a`](https://mainnet.zcashexplorer.app/transactions/538553e4a7892bfc3a2fffdccf22d297b4245cb1add79e43bdd74f98d908fd6a)
+- Archived raw JSON:
+  [`/orchard-tx-examples/5385...fd6a.json`](pathname:///orchard-tx-examples/538553e4a7892bfc3a2fffdccf22d297b4245cb1add79e43bdd74f98d908fd6a.json)
+- Total tx size: **12321 bytes**
+
+| Field                   | Value                                                                |
+| ----------------------- | -------------------------------------------------------------------- |
+| `version`               | 5                                                                    |
+| `vin` / `vout` count    | 0 / 0                                                                |
+| `actions` count         | **3**                                                                |
+| `valueBalanceOrchard`   | `+15 000 zat` (the fee)                                              |
+| `proofsOrchard` length  | **9536 bytes**                                                       |
+
+Same shape as example A (pure z->z, no transparent or Sapling
+component) but with three actions instead of two. The wallet
+that built this transaction picked three for unlinkability
+reasons (probably one spend plus two outputs, or one real plus
+two dummies). The on-chain observer sees three nullifiers and
+three commitments without learning how many of each are real.
+
+#### Proof-size scaling
+
+Pulling the proof length and action count from all five
+examples:
+
+| Example | Actions | `proofsOrchard` (bytes) | Per-action delta vs base    |
+| ------- | ------: | ----------------------: | --------------------------- |
+| A, B, C |       2 |                    7264 | baseline                    |
+| E       |       3 |                    9536 | +2272                       |
+| D       |       4 |                   11808 | +2272 (relative to E)       |
+
+Each additional action adds exactly **2272 bytes** to the halo2
+proof on mainnet (at this protocol version). This is the
+per-action evaluation and commitment overhead the prover writes
+to the transcript; the constant 7264-byte base covers the
+gate, permutation, lookup, and IPA tail. Note that this is the
+proof size, not the verifier cost: the per-action verifier work
+is dominated by the multi-scalar multiplication, which IPA can
+amortize when batched (see chapter 09).
+
+#### What these five examples confirm about the format
 
 - Per-action body is exactly 820 bytes (32 + 32 + 32 + 32 + 32 +
   580 + 80), matching the table in section 3.1.
-- A single 7+ KB halo2 proof covers all actions in the bundle.
-  An equivalent Sapling bundle would carry one ~192-byte Groth16
+- The Orchard bundle size is independent of how many transparent
+  inputs and outputs the surrounding transaction has (example C
+  has 4 vin, example A has 0).
+- A single halo2 proof covers all actions in the bundle; the
+  proof grows by ~2272 bytes per additional action.
+- An equivalent Sapling bundle would carry one ~192-byte Groth16
   proof per spend *and* per output, plus per-description
-  overheads.
-- The anchor is bundle-scoped (one per transaction), not
-  per-action.
-- `enableSpends` and `enableOutputs` are nearly always both
-  `true` in the wild; their existence in the byte format is what
-  makes output-only and spend-only bundles encodable at all.
+  overheads, so the cross-over point in proof size between
+  Orchard and Sapling is around 30+ descriptions; below that
+  Sapling is smaller, but every action's verifier cost is one
+  pairing-set in Sapling versus an amortizable MSM in Orchard.
+- The anchor is bundle-scoped: examples B and C share the same
+  anchor across different bundles, which is allowed and
+  expected.
+- `enableSpends` and `enableOutputs` are both `true` in every
+  example above; their existence in the byte format is what
+  makes output-only and spend-only bundles encodable at all,
+  but mainnet wallets do not seem to use that capability in
+  practice.
 
 ### 3.6 Where to look in the code
 
